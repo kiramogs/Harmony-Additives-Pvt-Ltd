@@ -4,6 +4,7 @@ import AboutSection from "@/components/AboutSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import ProductsSection from "@/components/ProductsSection";
 import ContactSection from "@/components/ContactSection";
+import Chatbot from "@/components/Chatbot";
 
 export default function Home() {
   return (
@@ -28,6 +29,9 @@ export default function Home() {
         <ProductsSection />
         <ContactSection />
       </div>
+
+      {/* AI Chatbot Widget */}
+      <Chatbot />
     </main>
   );
 }
