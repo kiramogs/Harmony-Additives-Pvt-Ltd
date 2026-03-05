@@ -15,7 +15,7 @@ export default function Chatbot() {
         {
             id: "welcome",
             role: "assistant",
-            text: "Hello! 👋 Welcome to Harmony Additives. I'm your AI assistant. How can I help you today?",
+            text: "Hello! 👋 Welcome to Harmony Additives. I'm Addi-Buddy, your AI assistant. How can I help you today?",
             timestamp: new Date(),
         },
     ]);
@@ -99,59 +99,19 @@ export default function Chatbot() {
 
     return (
         <>
-            {/* ── Floating trigger button ── */}
-            <button
-                id="chatbot-toggle"
-                className={`chatbot-fab ${isOpen ? "chatbot-fab--open" : ""}`}
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label={isOpen ? "Close chat" : "Open chat"}
-            >
-                <span className="chatbot-fab-icon">
-                    {isOpen ? (
-                        <svg
-                            width="22"
-                            height="22"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                    ) : (
-                        <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                        </svg>
-                    )}
-                </span>
-                {!isOpen && <span className="chatbot-fab-pulse" />}
-            </button>
-
-            {/* ── Chat window ── */}
-            <div
-                className={`chatbot-window ${isOpen ? "chatbot-window--open" : ""}`}
-                role="dialog"
-                aria-label="Chat with Harmony Additives AI"
-            >
-                {/* Header */}
-                <div className="chatbot-header">
-                    <div className="chatbot-header-info">
-                        <div className="chatbot-avatar">
+            {/* ── Floating trigger area ── */}
+            <div className={`chatbot-fab-wrapper ${isOpen ? "chatbot-fab-wrapper--open" : ""}`}>
+                <button
+                    id="chatbot-toggle"
+                    className={`chatbot-fab ${isOpen ? "chatbot-fab--open" : ""}`}
+                    onClick={() => setIsOpen(!isOpen)}
+                    aria-label={isOpen ? "Close chat" : "Open chat"}
+                >
+                    <span className="chatbot-fab-icon">
+                        {isOpen ? (
                             <svg
-                                width="20"
-                                height="20"
+                                width="22"
+                                height="22"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
@@ -159,12 +119,50 @@ export default function Chatbot() {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             >
-                                <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z" />
-                                <line x1="10" y1="22" x2="14" y2="22" />
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
+                        ) : (
+                            <video
+                                className="chatbot-logo-video chatbot-logo-video--fab"
+                                src="/chatbot-logo.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                disablePictureInPicture
+                            />
+                        )}
+                    </span>
+                    {!isOpen && <span className="chatbot-fab-pulse" />}
+                </button>
+                {!isOpen && (
+                    <span className="chatbot-fab-label">Ask the ChatBot</span>
+                )}
+            </div>
+
+            {/* ── Chat window ── */}
+            <div
+                className={`chatbot-window ${isOpen ? "chatbot-window--open" : ""}`}
+                role="dialog"
+                aria-label="Chat with Addi-Buddy"
+            >
+                {/* Header */}
+                <div className="chatbot-header">
+                    <div className="chatbot-header-info">
+                        <div className="chatbot-avatar">
+                            <video
+                                className="chatbot-logo-video chatbot-logo-video--header"
+                                src="/chatbot-logo.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                disablePictureInPicture
+                            />
                         </div>
                         <div>
-                            <h3 className="chatbot-header-title">Harmony AI Assistant</h3>
+                            <h3 className="chatbot-header-title">Addi-Buddy</h3>
                             <span className="chatbot-header-status">
                                 <span className="chatbot-status-dot" />
                                 Online
@@ -198,18 +196,15 @@ export default function Chatbot() {
                         <div key={msg.id} className={`chatbot-msg chatbot-msg--${msg.role}`}>
                             {msg.role === "assistant" && (
                                 <div className="chatbot-msg-avatar">
-                                    <svg
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z" />
-                                    </svg>
+                                    <video
+                                        className="chatbot-logo-video chatbot-logo-video--msg"
+                                        src="/chatbot-logo.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        disablePictureInPicture
+                                    />
                                 </div>
                             )}
                             <div className="chatbot-msg-bubble">
@@ -227,18 +222,15 @@ export default function Chatbot() {
                     {isLoading && (
                         <div className="chatbot-msg chatbot-msg--assistant">
                             <div className="chatbot-msg-avatar">
-                                <svg
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z" />
-                                </svg>
+                                <video
+                                    className="chatbot-logo-video chatbot-logo-video--msg"
+                                    src="/chatbot-logo.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    disablePictureInPicture
+                                />
                             </div>
                             <div className="chatbot-msg-bubble chatbot-msg-bubble--typing">
                                 <div className="chatbot-typing">
