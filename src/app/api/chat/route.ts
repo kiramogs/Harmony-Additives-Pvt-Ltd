@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const WEBHOOK_URL =
-    "https://harmonyadditives.app.n8n.cloud/webhook/83861be5-fba2-4f40-8d88-b2727afada3c";
+    "https://armann8n.duckdns.org/webhook/83861be5-fba2-4f40-8d88-b2727afada3c";
 
 export async function POST(req: NextRequest) {
     try {
