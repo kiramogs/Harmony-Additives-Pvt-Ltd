@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const FRAME_COUNT = 87;
 const INTRO_FADE_VIEWPORTS = 0.55;
 const FRAME_START_VIEWPORTS = 0.75;
+const HERO_SCROLL_VIEWPORTS = 3.375;
 const MAX_CANVAS_DPR = 1.75;
 
 interface DrawMetrics {
@@ -248,7 +249,7 @@ export default function ScrollAnimation() {
             <div
                 ref={containerRef}
                 className="scroll-container"
-                style={{ height: "500vh" }}
+                style={{ height: `${HERO_SCROLL_VIEWPORTS * 100}vh` }}
             >
                 <canvas
                     ref={canvasRef}
