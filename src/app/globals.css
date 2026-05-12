@@ -186,15 +186,19 @@ body {
    ═══════════════════════════════════════════════════════ */
 .scroll-indicator {
   position: fixed;
-  bottom: 2.5rem;
+  bottom: 4rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
+  pointer-events: none;
+}
+
+.scroll-indicator-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  animation: fade-in 1s ease 0.5s both, float-up 2.4s ease-in-out infinite 1.5s;
+  animation: fade-in 0.9s ease 0.25s both, float-up 2.4s ease-in-out infinite 1.25s;
 }
 
 .scroll-indicator-mouse {
@@ -218,8 +222,8 @@ body {
 .scroll-indicator-text {
   font-family: var(--font-serif-family);
   font-size: 0.65rem;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.25);
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.38);
   letter-spacing: 0.25em;
   text-transform: uppercase;
   font-style: italic;
@@ -240,12 +244,12 @@ body {
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateY(20px);
   }
 
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 
@@ -253,11 +257,11 @@ body {
 
   0%,
   100% {
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 
   50% {
-    transform: translateX(-50%) translateY(-5px);
+    transform: translateY(-5px);
   }
 }
 

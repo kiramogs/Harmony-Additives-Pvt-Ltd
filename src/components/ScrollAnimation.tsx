@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const FRAME_COUNT = 87;
+const INTRO_FADE_VIEWPORTS = 0.55;
+const FRAME_START_VIEWPORTS = 0.75;
 
 function getFramePath(index: number): string {
     const padded = String(index).padStart(3, "0");
@@ -16,6 +18,7 @@ function getFramePath(index: number): string {
 export default function ScrollAnimation() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const scrollIndicatorRef = useRef<HTMLDivElement>(null);
     const imagesRef = useRef<HTMLImageElement[]>([]);
     const frameRef = useRef({ current: 0 });
     const dprRef = useRef(1);
@@ -65,7 +68,6 @@ export default function ScrollAnimation() {
         const img = imagesRef.current[index];
         if (!img || !img.complete) return;
 
-        const dpr = dprRef.current;
         const cw = canvas.width;   // already scaled by DPR
         const ch = canvas.height;
         const iw = img.naturalWidth;
@@ -121,18 +123,34 @@ export default function ScrollAnimation() {
         renderFrame(0);
 
         const ctx = gsap.context(() => {
+            if (scrollIndicatorRef.current) {
+                gsap.to(scrollIndicatorRef.current, {
+                    autoAlpha: 0,
+                    y: -18,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top top",
+                        end: () => `top+=${Math.round(window.innerHeight * INTRO_FADE_VIEWPORTS)} top`,
+                        scrub: true,
+                        invalidateOnRefresh: true,
+                    },
+                });
+            }
+
             gsap.to(frameRef.current, {
                 current: FRAME_COUNT - 1,
                 ease: "none",
                 snap: "current",
+                onUpdate: () => {
+                    renderFrame(Math.round(frameRef.current.current));
+                },
                 scrollTrigger: {
                     trigger: containerRef.current,
-                    start: "top top",
+                    start: () => `top+=${Math.round(window.innerHeight * FRAME_START_VIEWPORTS)} top`,
                     end: "bottom bottom",
                     scrub: 0.5,
-                    onUpdate: () => {
-                        renderFrame(Math.round(frameRef.current.current));
-                    },
+                    invalidateOnRefresh: true,
                 },
             });
         }, containerRef);
@@ -174,11 +192,13 @@ export default function ScrollAnimation() {
 
                 {/* Scroll indicator */}
                 {loaded && (
-                    <div className="scroll-indicator">
-                        <div className="scroll-indicator-mouse">
-                            <div className="scroll-indicator-wheel" />
+                    <div ref={scrollIndicatorRef} className="scroll-indicator">
+                        <div className="scroll-indicator-inner">
+                            <div className="scroll-indicator-mouse">
+                                <div className="scroll-indicator-wheel" />
+                            </div>
+                            <p className="scroll-indicator-text">Scroll to Explore</p>
                         </div>
-                        <p className="scroll-indicator-text">Scroll to explore</p>
                     </div>
                 )}
             </div>
