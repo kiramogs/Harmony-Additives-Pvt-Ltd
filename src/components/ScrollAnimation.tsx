@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -9,6 +9,16 @@ gsap.registerPlugin(ScrollTrigger);
 const FRAME_COUNT = 87;
 const INTRO_FADE_VIEWPORTS = 0.55;
 const FRAME_START_VIEWPORTS = 0.75;
+const MAX_CANVAS_DPR = 1.75;
+
+interface DrawMetrics {
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+}
 
 function getFramePath(index: number): string {
     const padded = String(index).padStart(3, "0");
@@ -19,108 +29,158 @@ export default function ScrollAnimation() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const scrollIndicatorRef = useRef<HTMLDivElement>(null);
+    const contextRef = useRef<CanvasRenderingContext2D | null>(null);
     const imagesRef = useRef<HTMLImageElement[]>([]);
+    const drawMetricsRef = useRef<DrawMetrics | null>(null);
     const frameRef = useRef({ current: 0 });
-    const dprRef = useRef(1);
+    const rafRef = useRef<number | null>(null);
+    const pendingFrameRef = useRef(0);
+    const renderedFrameRef = useRef(-1);
     const [progress, setProgress] = useState(0);
     const [loaded, setLoaded] = useState(false);
 
-    // ── Preload all frames at full quality ──
     useEffect(() => {
         const images: HTMLImageElement[] = [];
         let loadedCount = 0;
+        let cancelled = false;
+
+        const markFrameComplete = () => {
+            if (cancelled) return;
+
+            loadedCount++;
+            setProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
+
+            if (loadedCount === FRAME_COUNT) {
+                imagesRef.current = images;
+                setLoaded(true);
+            }
+        };
 
         for (let i = 0; i < FRAME_COUNT; i++) {
             const img = new Image();
 
-            // Force full-quality decode — no lazy loading, no compression
             img.decoding = "async";
             img.fetchPriority = i < 10 ? "high" : "auto";
             img.src = getFramePath(i);
 
-            img.onload = () => {
-                loadedCount++;
-                setProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
-                if (loadedCount === FRAME_COUNT) {
-                    imagesRef.current = images;
-                    setLoaded(true);
+            img.onload = async () => {
+                try {
+                    await img.decode();
+                } catch {
+                    // drawImage can still use images when decode() rejects for an already-loaded frame.
                 }
+
+                markFrameComplete();
             };
             img.onerror = () => {
-                loadedCount++;
-                setProgress(Math.round((loadedCount / FRAME_COUNT) * 100));
+                markFrameComplete();
             };
             images.push(img);
         }
 
         return () => {
+            cancelled = true;
             images.length = 0;
         };
     }, []);
 
-    // ── Render a frame at native device resolution ──
-    const renderFrame = useCallback((index: number) => {
+    const getCanvasContext = useCallback(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+        if (!canvas) return null;
 
-        const img = imagesRef.current[index];
-        if (!img || !img.complete) return;
+        if (!contextRef.current) {
+            contextRef.current = canvas.getContext("2d", {
+                alpha: false,
+                desynchronized: true,
+            });
+        }
 
-        const cw = canvas.width;   // already scaled by DPR
-        const ch = canvas.height;
-        const iw = img.naturalWidth;
-        const ih = img.naturalHeight;
+        const ctx = contextRef.current;
 
-        // Cover-fit at full native resolution
-        const scale = Math.max(cw / iw, ch / ih);
-        const w = iw * scale;
-        const h = ih * scale;
-        const x = (cw - w) / 2;
-        const y = (ch - h) / 2;
+        if (ctx) {
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = "high";
+        }
 
-        // Highest quality rendering settings
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
-
-        ctx.clearRect(0, 0, cw, ch);
-        ctx.drawImage(img, x, y, w, h);
+        return ctx;
     }, []);
 
-    // ── Size canvas to window × device pixel ratio for crisp rendering ──
+    const updateDrawMetrics = useCallback(() => {
+        const canvas = canvasRef.current;
+        const img = imagesRef.current[0];
+        if (!canvas || !img) return;
+
+        const width = canvas.width;
+        const height = canvas.height;
+        const scale = Math.max(width / img.naturalWidth, height / img.naturalHeight);
+        const w = img.naturalWidth * scale;
+        const h = img.naturalHeight * scale;
+
+        drawMetricsRef.current = {
+            width,
+            height,
+            x: (width - w) / 2,
+            y: (height - h) / 2,
+            w,
+            h,
+        };
+    }, []);
+
+    const renderFrameNow = useCallback((index: number) => {
+        const ctx = getCanvasContext();
+        const metrics = drawMetricsRef.current;
+        if (!ctx || !metrics) return;
+
+        const frameIndex = Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(index)));
+        if (renderedFrameRef.current === frameIndex) return;
+
+        const img = imagesRef.current[frameIndex];
+        if (!img || !img.complete) return;
+
+        ctx.clearRect(0, 0, metrics.width, metrics.height);
+        ctx.drawImage(img, metrics.x, metrics.y, metrics.w, metrics.h);
+        renderedFrameRef.current = frameIndex;
+    }, [getCanvasContext]);
+
+    const requestFrameRender = useCallback((index: number) => {
+        pendingFrameRef.current = index;
+
+        if (rafRef.current !== null) return;
+
+        rafRef.current = window.requestAnimationFrame(() => {
+            rafRef.current = null;
+            renderFrameNow(pendingFrameRef.current);
+        });
+    }, [renderFrameNow]);
+
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
         const resize = () => {
-            const dpr = Math.min(window.devicePixelRatio || 1, 3); // cap at 3x
-            dprRef.current = dpr;
-
+            const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 1), MAX_CANVAS_DPR);
             const w = window.innerWidth;
             const h = window.innerHeight;
 
-            // Set internal resolution to native pixel count
-            canvas.width = w * dpr;
-            canvas.height = h * dpr;
-
-            // Display size stays at CSS pixels
+            canvas.width = Math.round(w * dpr);
+            canvas.height = Math.round(h * dpr);
             canvas.style.width = `${w}px`;
             canvas.style.height = `${h}px`;
 
-            renderFrame(Math.round(frameRef.current.current));
+            renderedFrameRef.current = -1;
+            updateDrawMetrics();
+            requestFrameRender(frameRef.current.current);
         };
 
         resize();
         window.addEventListener("resize", resize);
         return () => window.removeEventListener("resize", resize);
-    }, [loaded, renderFrame]);
+    }, [loaded, requestFrameRender, updateDrawMetrics]);
 
-    // ── GSAP ScrollTrigger — map scroll to frame index ──
     useEffect(() => {
         if (!loaded || !containerRef.current) return;
 
-        renderFrame(0);
+        renderFrameNow(0);
 
         const ctx = gsap.context(() => {
             if (scrollIndicatorRef.current) {
@@ -143,24 +203,30 @@ export default function ScrollAnimation() {
                 ease: "none",
                 snap: "current",
                 onUpdate: () => {
-                    renderFrame(Math.round(frameRef.current.current));
+                    requestFrameRender(frameRef.current.current);
                 },
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: () => `top+=${Math.round(window.innerHeight * FRAME_START_VIEWPORTS)} top`,
                     end: "bottom bottom",
-                    scrub: 0.5,
+                    scrub: 0.2,
                     invalidateOnRefresh: true,
                 },
             });
         }, containerRef);
 
-        return () => ctx.revert();
-    }, [loaded, renderFrame]);
+        return () => {
+            ctx.revert();
+
+            if (rafRef.current !== null) {
+                window.cancelAnimationFrame(rafRef.current);
+                rafRef.current = null;
+            }
+        };
+    }, [loaded, renderFrameNow, requestFrameRender]);
 
     return (
         <>
-            {/* Loading screen */}
             {!loaded && (
                 <div className="loading-screen">
                     <div className="loading-content">
@@ -179,7 +245,6 @@ export default function ScrollAnimation() {
                 </div>
             )}
 
-            {/* Scroll container */}
             <div
                 ref={containerRef}
                 className="scroll-container"
@@ -190,7 +255,6 @@ export default function ScrollAnimation() {
                     className="animation-canvas"
                 />
 
-                {/* Scroll indicator */}
                 {loaded && (
                     <div ref={scrollIndicatorRef} className="scroll-indicator">
                         <div className="scroll-indicator-inner">

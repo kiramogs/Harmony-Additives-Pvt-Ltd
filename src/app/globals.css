@@ -174,11 +174,13 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+  display: block;
   width: 100vw;
   height: 100vh;
   z-index: 1;
+  contain: strict;
+  backface-visibility: hidden;
   image-rendering: high-quality;
-  image-rendering: -webkit-optimize-contrast;
 }
 
 /* ═══════════════════════════════════════════════════════
