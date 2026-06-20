@@ -1,42 +1,85 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const WEBHOOK_URL =
-    "https://armann8n.duckdns.org/webhook/83861be5-fba2-4f40-8d88-b2727afada3c";
+type ChatRole = "system" | "user" | "assistant";
+
+interface IncomingMessage {
+    role: ChatRole;
+    text: string;
+}
 
 export async function POST(req: NextRequest) {
-    try {
-        const body = await req.json();
+    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || "https://harmony1.app.n8n.cloud/webhook/ee34a72c-ef99-453a-b5aa-59708b95452a";
 
-        const n8nResponse = await fetch(WEBHOOK_URL, {
+    try {
+        const body = (await req.json()) as {
+            chatInput?: string;
+            sessionId?: string;
+            messages?: IncomingMessage[];
+        };
+
+        const chatInput = body.chatInput || "";
+        const sessionId = body.sessionId || "";
+        const messages = body.messages || [];
+
+        // Forward to n8n webhook
+        const response = await fetch(n8nWebhookUrl, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                chatInput,
+                sessionId,
+                messages,
+            }),
+            signal: AbortSignal.timeout(45000), // n8n workflow can take some time if RAG/Agent is slow
         });
 
-        // The AI Agent's response is in the x-n8n-text header (URL-encoded)
-        const headerText = n8nResponse.headers.get("x-n8n-text");
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`n8n webhook returned status ${response.status}:`, errorText);
+            throw new Error(`Webhook request failed with status ${response.status}`);
+        }
 
-        let text: string;
+        const data = await response.json();
+        console.log("n8n Webhook raw response data:", data);
 
-        if (headerText) {
-            text = decodeURIComponent(headerText);
-        } else {
-            // Fallback: try reading body
-            try {
-                const contentType = n8nResponse.headers.get("content-type") || "";
-                if (contentType.includes("application/json")) {
-                    const data = await n8nResponse.json();
-                    text = data.output || data.text || data.message || JSON.stringify(data);
-                } else {
-                    const raw = await n8nResponse.text();
-                    text = raw || "I received your message but got an empty response.";
-                }
-            } catch {
-                text = "I received your message but couldn't parse the response.";
+        // Normalize response data: n8n usually returns an array of items, or a single item, or nested json.
+        const responseItem = Array.isArray(data) ? data[0] : data;
+
+        // Try standard fields that could contain the response
+        let text = "";
+        if (responseItem) {
+            if (typeof responseItem === "string") {
+                text = responseItem;
+            } else if (responseItem.json && typeof responseItem.json === "object") {
+                // If it's wrapped in an outer "json" object (common in n8n list endpoints)
+                const innerJson = responseItem.json;
+                text = innerJson.output || innerJson.answer || innerJson.text || innerJson.response || "";
+            } else {
+                text = responseItem.output || responseItem.answer || responseItem.text || responseItem.response || "";
             }
         }
 
-        return NextResponse.json({ text });
+        text = String(text).trim();
+
+        if (!text) {
+            // If we couldn't find a text response, let's look at any string property or fallback
+            console.warn("Could not find standard text fields in webhook response. Attempting fallback extraction.");
+            if (responseItem && typeof responseItem === "object") {
+                // Find any string key that is non-empty
+                for (const value of Object.values(responseItem)) {
+                    if (typeof value === "string" && value.trim().length > 0) {
+                        text = value.trim();
+                        break;
+                    }
+                }
+            }
+        }
+
+        return NextResponse.json({
+            text: text || "I received your message but got an empty response from the assistant.",
+        });
     } catch (error) {
         console.error("Chat API error:", error);
         return NextResponse.json(

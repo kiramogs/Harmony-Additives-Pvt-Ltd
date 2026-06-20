@@ -7,9 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const FRAME_COUNT = 87;
-const INTRO_FADE_VIEWPORTS = 0.55;
-const FRAME_START_VIEWPORTS = 0.75;
-const HERO_SCROLL_VIEWPORTS = 3.375;
+const INTRO_FADE_VIEWPORTS = 0.342;
+const FRAME_START_VIEWPORTS = 0.467;
+const HERO_SCROLL_VIEWPORTS = 2.101;
 const MAX_CANVAS_DPR = 1.75;
 
 interface DrawMetrics {

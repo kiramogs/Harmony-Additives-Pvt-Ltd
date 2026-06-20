@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,9 +8,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
     const navRef = useRef<HTMLElement>(null);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
         if (!navRef.current) return;
+
+        const prefersReducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        if (prefersReducedMotion) {
+            gsap.set(navRef.current, { y: 0, opacity: 1 });
+            return;
+        }
 
         const ctx = gsap.context(() => {
             gsap.fromTo(
@@ -33,40 +43,83 @@ export default function Navbar() {
         return () => ctx.revert();
     }, []);
 
+    // Close mobile menu on resize to desktop
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 768) setMobileOpen(false);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        document.body.style.overflow = mobileOpen ? "hidden" : "";
+        return () => { document.body.style.overflow = ""; };
+    }, [mobileOpen]);
+
+    const handleNavClick = () => setMobileOpen(false);
+
     return (
-        <nav ref={navRef} className="glass-navbar">
-            <div className="nav-inner">
-                <div className="nav-logo">
-                    <div className="nav-logo-icon">
-                        <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
-                            <path
-                                d="M50 5 C50 5 20 45 20 62 C20 79 33 90 50 90 C67 90 80 79 80 62 C80 45 50 5 50 5Z"
-                                fill="url(#dropGrad)"
-                                stroke="rgba(255,255,255,0.3)"
-                                strokeWidth="2"
+        <>
+            <nav ref={navRef} className="glass-navbar">
+                <div className="nav-inner">
+                    <div className="nav-logo">
+                        <div className="nav-logo-icon">
+                            <img
+                                src="/hlogo.png"
+                                alt="Harmony Additives Logo"
+                                width="40"
+                                height="40"
+                                className="nav-logo-img"
+                                style={{ objectFit: "contain" }}
                             />
-                            <circle cx="50" cy="62" r="16" fill="none" stroke="#FF6B35" strokeWidth="3" />
-                            <line x1="50" y1="35" x2="50" y2="85" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
-                            <defs>
-                                <linearGradient id="dropGrad" x1="20" y1="5" x2="80" y2="90">
-                                    <stop offset="0%" stopColor="#3B82F6" />
-                                    <stop offset="100%" stopColor="#1D4ED8" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                        </div>
+                        <span className="nav-brand">Harmony Additives</span>
                     </div>
-                    <span className="nav-brand">Harmony Additives</span>
+
+                    <ul className="nav-links">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#industries">Industries</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+
+                    <a href="tel:+919820780452" className="nav-cta nav-cta--desktop">
+                        Get a Quote
+                    </a>
+
+                    {/* Hamburger button — mobile only */}
+                    <button
+                        className={`nav-hamburger ${mobileOpen ? "nav-hamburger--open" : ""}`}
+                        onClick={() => setMobileOpen(!mobileOpen)}
+                        aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={mobileOpen}
+                    >
+                        <span className="nav-hamburger-line" />
+                        <span className="nav-hamburger-line" />
+                        <span className="nav-hamburger-line" />
+                    </button>
                 </div>
-                <ul className="nav-links">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#industries">Industries</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#contact">Contact</a></li>
+            </nav>
+
+            {/* Mobile slide-in menu */}
+            <div
+                className={`mobile-menu-overlay ${mobileOpen ? "mobile-menu-overlay--visible" : ""}`}
+                onClick={() => setMobileOpen(false)}
+                aria-hidden="true"
+            />
+            <div className={`mobile-menu ${mobileOpen ? "mobile-menu--open" : ""}`}>
+                <ul className="mobile-menu-links">
+                    <li><a href="#about" onClick={handleNavClick}>About</a></li>
+                    <li><a href="#industries" onClick={handleNavClick}>Industries</a></li>
+                    <li><a href="#products" onClick={handleNavClick}>Products</a></li>
+                    <li><a href="#contact" onClick={handleNavClick}>Contact</a></li>
                 </ul>
-                <a href="tel:+919820780452" className="nav-cta">
-                    Ask Expert
+                <a href="tel:+919820780452" className="nav-cta mobile-menu-cta" onClick={handleNavClick}>
+                    Get a Quote
                 </a>
             </div>
-        </nav>
+        </>
     );
 }

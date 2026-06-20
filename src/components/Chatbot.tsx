@@ -9,13 +9,18 @@ interface Message {
     timestamp: Date;
 }
 
+interface ApiMessage {
+    role: Message["role"];
+    text: string;
+}
+
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         {
             id: "welcome",
             role: "assistant",
-            text: "Hello! 👋 Welcome to Harmony Additives. I'm Addi-Buddy, your AI assistant. How can I help you today?",
+            text: "Hi there. I can help with product info, technical specs, or general questions about Harmony Additives. What do you need?",
             timestamp: new Date(),
         },
     ]);
@@ -48,23 +53,29 @@ export default function Chatbot() {
             text: trimmed,
             timestamp: new Date(),
         };
+        const nextMessages = [...messages, userMsg];
 
-        setMessages((prev) => [...prev, userMsg]);
+        setMessages(nextMessages);
         setInput("");
         setIsLoading(true);
 
         try {
-            // Call our own API route (server-side proxy to n8n)
             const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     chatInput: trimmed,
                     sessionId: getSessionId(),
+                    messages: nextMessages.map<ApiMessage>(({ role, text }) => ({ role, text })),
                 }),
             });
 
-            const data = await response.json();
+            const data = (await response.json()) as { text?: string };
+
+            if (!response.ok) {
+                throw new Error(data.text || "Chat request failed.");
+            }
+
             const assistantText =
                 data.text || "I received your message but got an empty response.";
 
@@ -99,7 +110,6 @@ export default function Chatbot() {
 
     return (
         <>
-            {/* ── Floating trigger area ── */}
             <div className={`chatbot-fab-wrapper ${isOpen ? "chatbot-fab-wrapper--open" : ""}`}>
                 <button
                     id="chatbot-toggle"
@@ -136,18 +146,14 @@ export default function Chatbot() {
                     </span>
                     {!isOpen && <span className="chatbot-fab-pulse" />}
                 </button>
-                {!isOpen && (
-                    <span className="chatbot-fab-label">Ask the ChatBot</span>
-                )}
+                {!isOpen && <span className="chatbot-fab-label">Ask Addi-Buddy</span>}
             </div>
 
-            {/* ── Chat window ── */}
             <div
                 className={`chatbot-window ${isOpen ? "chatbot-window--open" : ""}`}
                 role="dialog"
                 aria-label="Chat with Addi-Buddy"
             >
-                {/* Header */}
                 <div className="chatbot-header">
                     <div className="chatbot-header-info">
                         <div className="chatbot-avatar">
@@ -190,7 +196,6 @@ export default function Chatbot() {
                     </button>
                 </div>
 
-                {/* Messages */}
                 <div className="chatbot-messages">
                     {messages.map((msg) => (
                         <div key={msg.id} className={`chatbot-msg chatbot-msg--${msg.role}`}>
@@ -245,7 +250,6 @@ export default function Chatbot() {
                     <div ref={messagesEndRef} />
                 </div>
 
-                {/* Input */}
                 <div className="chatbot-input-area">
                     <input
                         ref={inputRef}
@@ -255,7 +259,7 @@ export default function Chatbot() {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        placeholder="Type your message…"
+                        placeholder="Type your message..."
                         disabled={isLoading}
                         autoComplete="off"
                     />
@@ -286,7 +290,6 @@ export default function Chatbot() {
     );
 }
 
-/* ─── Utility: persistent session ID ─── */
 function getSessionId(): string {
     if (typeof window === "undefined") return "server";
     let sid = sessionStorage.getItem("harmony-chat-session");

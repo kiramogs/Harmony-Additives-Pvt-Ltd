@@ -22,27 +22,35 @@ export default function GlassCard({
     useEffect(() => {
         if (!cardRef.current) return;
 
+        // Respect reduced-motion preference
+        const prefersReducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        if (prefersReducedMotion) {
+            gsap.set(cardRef.current, { opacity: 1, y: 0, scale: 1 });
+            return;
+        }
+
         const ctx = gsap.context(() => {
             gsap.fromTo(
                 cardRef.current,
                 {
-                    y: 80,
+                    y: 60,
                     opacity: 0,
-                    scale: 0.92,
-                    filter: "blur(10px)",
+                    scale: 0.96,
                 },
                 {
                     y: 0,
                     opacity: 1,
                     scale: 1,
-                    filter: "blur(0px)",
-                    duration: 1,
+                    duration: 0.8,
                     delay,
                     ease: "power3.out",
                     scrollTrigger: {
                         trigger: cardRef.current,
-                        start: "top 90%",
-                        end: "top 50%",
+                        start: "top 92%",
+                        end: "top 60%",
                         toggleActions: "play none none reverse",
                     },
                 }

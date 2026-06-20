@@ -5,6 +5,7 @@ import IndustriesSection from "@/components/IndustriesSection";
 import ProductsSection from "@/components/ProductsSection";
 import ContactSection from "@/components/ContactSection";
 import Chatbot from "@/components/Chatbot";
+import ParticleField from "@/components/ParticleField";
 
 export default function Home() {
   return (
@@ -23,6 +24,9 @@ export default function Home() {
           <div className="ambient-blob blob-3" />
           <div className="ambient-blob blob-4" />
         </div>
+
+        {/* Floating particle background */}
+        <ParticleField />
 
         <AboutSection />
         <IndustriesSection />
