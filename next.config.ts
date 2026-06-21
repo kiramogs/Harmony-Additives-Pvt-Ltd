@@ -11,13 +11,17 @@ const nextConfig: NextConfig = {
     // CSP: next/font self-hosts fonts (font-src 'self'); the chatbot calls the
     // same-origin /api/chat (connect-src 'self'). 'unsafe-inline' is required for
     // Next's hydration bootstrap, inline JSON-LD, and inline component styles.
+    // When NEXT_PUBLIC_GA_ID is set at build time, GA4 domains are auto-allowed.
+    const gaOn = Boolean(process.env.NEXT_PUBLIC_GA_ID);
+    const gtm = "https://www.googletagmanager.com";
+    const ga = "https://www.google-analytics.com https://*.google-analytics.com";
     const csp = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      `script-src 'self' 'unsafe-inline'${gaOn ? ` ${gtm}` : ""}`,
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob:",
+      `img-src 'self' data: blob:${gaOn ? ` ${ga} ${gtm}` : ""}`,
       "font-src 'self'",
-      "connect-src 'self'",
+      `connect-src 'self'${gaOn ? ` ${ga} ${gtm}` : ""}`,
       "media-src 'self'",
       "frame-ancestors 'self'",
       "base-uri 'self'",
@@ -26,24 +30,33 @@ const nextConfig: NextConfig = {
       "upgrade-insecure-requests",
     ].join("; ");
 
-    return [
+    const securityHeaders = [
+      { key: "Content-Security-Policy", value: csp },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "X-Frame-Options", value: "SAMEORIGIN" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      { key: "X-DNS-Prefetch-Control", value: "on" },
       {
-        source: "/:path*",
-        headers: [
-          { key: "Content-Security-Policy", value: csp },
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "SAMEORIGIN" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "X-DNS-Prefetch-Control", value: "on" },
-          {
-            key: "Strict-Transport-Security",
-            value: "max-age=63072000; includeSubDomains; preload",
-          },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
-        ],
+        key: "Strict-Transport-Security",
+        value: "max-age=63072000; includeSubDomains; preload",
+      },
+      {
+        key: "Permissions-Policy",
+        value: "camera=(), microphone=(), geolocation=()",
+      },
+    ];
+
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Long-lived immutable caching for fingerprint-free static assets
+      // (logo + scroll-animation frames) so a CDN can cache them aggressively.
+      {
+        source: "/frames/:file*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        source: "/:file(hlogo.*|hlogo-sm.*|addbuddy.*)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=2592000" }],
       },
     ];
   },

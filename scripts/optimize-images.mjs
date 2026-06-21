@@ -20,9 +20,11 @@ if (existsSync(logo)) {
         .toBuffer();
     const { writeFileSync } = await import("node:fs");
     writeFileSync(logo, buf);
-    // also a webp copy for the <img> tags
+    // full-size webp (used for OG / large contexts)
     await sharp(logo).resize(512, 512, { fit: "inside", withoutEnlargement: true }).webp({ quality: 88 }).toFile(join(pub, "hlogo.webp"));
-    console.log(`hlogo.png: ${before} kB -> ${kb(logo)} kB (+ hlogo.webp ${kb(join(pub, "hlogo.webp"))} kB)`);
+    // small webp sized for the 40-48px nav/footer marks (2x retina = ~128px)
+    await sharp(logo).resize(128, 128, { fit: "inside", withoutEnlargement: true }).webp({ quality: 90 }).toFile(join(pub, "hlogo-sm.webp"));
+    console.log(`hlogo.png: ${before} kB -> ${kb(logo)} kB (+ hlogo.webp ${kb(join(pub, "hlogo.webp"))} kB, hlogo-sm.webp ${kb(join(pub, "hlogo-sm.webp"))} kB)`);
 }
 
 // ── 2. Convert the 87 scroll-animation frames to WebP ──

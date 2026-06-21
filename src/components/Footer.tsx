@@ -27,7 +27,7 @@ export default function Footer() {
                 {/* Brand column */}
                 <div className="footer-brand-col">
                     <Link href="/" className="footer-logo-link" aria-label="Harmony Additives — Home">
-                        <img src="/hlogo.webp" alt="Harmony Additives" width="48" height="48" style={{ objectFit: "contain" }} />
+                        <img src="/hlogo-sm.webp" alt="Harmony Additives" width="48" height="48" style={{ objectFit: "contain" }} />
                         <span className="footer-brand-name">Harmony Additives</span>
                     </Link>
                     <p className="footer-tagline">An Eye For Excellence</p>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
+import Analytics from "@/components/Analytics";
 
 const inter = Inter({
   variable: "--font-body",
@@ -234,6 +235,7 @@ export default function RootLayout({
         className={`${inter.variable} ${playfair.variable} ${cormorant.variable} antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
