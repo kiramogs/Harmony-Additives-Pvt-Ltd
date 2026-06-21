@@ -5,7 +5,7 @@ import CountUp from "./CountUp";
 
 const stats = [
     { value: "1996", label: "Founded" },
-    { value: "3", label: "Manufacturing Units" },
+    { value: "173", label: "Products" },
     { value: "13+", label: "Export Countries" },
     { value: "500+", label: "Active Accounts" },
 ];
@@ -16,9 +16,9 @@ export default function AboutSection() {
             <div className="section-header">
                 <GlassCard className="section-title-card">
                     <span className="section-label">About Us</span>
-                    <h2 className="section-title">Built on 28 Years of Chemistry</h2>
+                    <h2 className="section-title">Built on 30 Years of Chemistry</h2>
                     <p className="section-subtitle">
-                        From a single lab in Mumbai to 13 countries and counting.
+                        From a single lab in Mumbai to 173 products and 13 countries.
                     </p>
                 </GlassCard>
             </div>
@@ -37,19 +37,31 @@ export default function AboutSection() {
             <div className="about-grid">
                 <GlassCard className="about-main" delay={0.1}>
                     <h3>Who We Are</h3>
-                    <p>
-                        Harmony Additives Private Limited has been manufacturing specialty
-                        chemicals and industrial additives since 1996. We are ISO 9001 and
-                        ISO 14001 certified, operating three production facilities in the
-                        Mumbai region that supply defoamers, emulsifiers, dispersing agents,
-                        and related formulations to industries including paints, paper,
-                        textiles, construction, and water treatment.
+                    <p className="about-intro-para">
+                        <strong>Harmony Additives Private Limited</strong> has been manufacturing
+                        specialty chemicals and industrial additives since 1996. We are
+                        ISO 9001 and ISO 14001 certified, operating three production facilities —
+                        two in Tarapur, Maharashtra and one in Umbergaon, Gujarat — that supply
+                        <strong> 173 products</strong> across six categories: defoamers, emulsifiers,
+                        wetting &amp; dispersing agents, thickeners, surface property enhancers,
+                        and tailor-made formulations.
                     </p>
-                    <p>
-                        Domestically we supply across India. Internationally, we export to
-                        Ethiopia, Nepal, Bangladesh, Sri Lanka, Myanmar, Vietnam, Egypt,
-                        South Africa, Ghana, Nigeria, Saudi Arabia, Mauritius, and Malaysia.
+                    <p className="about-intro-para">
+                        We serve paints &amp; coatings, printing inks, pulp &amp; paper, textiles,
+                        construction, agrochemicals, and effluent treatment across India, and export
+                        to 13 countries including Ethiopia, Nepal, Bangladesh, Vietnam, Egypt,
+                        South Africa, Nigeria, Saudi Arabia, and Malaysia.
                     </p>
+                    <div className="cert-row">
+                        <span className="apeo-badge">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                            APEO-Free Products
+                        </span>
+                        <span className="cert-badge">ISO 9001</span>
+                        <span className="cert-badge">ISO 14001</span>
+                    </div>
                 </GlassCard>
 
                 <div className="about-side">

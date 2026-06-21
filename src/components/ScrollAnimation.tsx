@@ -37,6 +37,7 @@ export default function ScrollAnimation() {
     const rafRef = useRef<number | null>(null);
     const pendingFrameRef = useRef(0);
     const renderedFrameRef = useRef(-1);
+    const heroTextRef = useRef<HTMLDivElement>(null);
     const [progress, setProgress] = useState(0);
     const [loaded, setLoaded] = useState(false);
 
@@ -199,6 +200,21 @@ export default function ScrollAnimation() {
                 });
             }
 
+            if (heroTextRef.current) {
+                gsap.to(heroTextRef.current, {
+                    autoAlpha: 0,
+                    y: -40,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top top",
+                        end: () => `top+=${Math.round(window.innerHeight * INTRO_FADE_VIEWPORTS)} top`,
+                        scrub: true,
+                        invalidateOnRefresh: true,
+                    },
+                });
+            }
+
             gsap.to(frameRef.current, {
                 current: FRAME_COUNT - 1,
                 ease: "none",
@@ -255,6 +271,31 @@ export default function ScrollAnimation() {
                     ref={canvasRef}
                     className="animation-canvas"
                 />
+
+                {/* Hero text always rendered (SSR) so the H1 and keyword copy are
+                    crawlable by search engines and AI bots, not gated behind client JS.
+                    The loading screen covers it until frames load; GSAP fades it on scroll. */}
+                <div ref={heroTextRef} className="hero-text-overlay">
+                    <span className="hero-eyebrow">Est. 1996 · Mumbai, India · ISO 9001 &amp; 14001</span>
+                    <h1 className="hero-h1">
+                        Specialty Chemical Additives<br />
+                        Manufacturer &amp; Exporter
+                    </h1>
+                    <p className="hero-tagline">An Eye For Excellence</p>
+                    <p className="hero-desc">
+                        Defoamers, emulsifiers, wetting &amp; dispersing agents, thickeners,
+                        surface enhancers &amp; custom formulations — 173 specialty additives
+                        across 6 categories serving 10+ industries in India and 13 countries.
+                    </p>
+                    <div className="hero-actions">
+                        <a href="/products/" className="hero-btn hero-btn--primary">
+                            Explore 173 Products
+                        </a>
+                        <a href="/ask-expert/" className="hero-btn hero-btn--secondary">
+                            Request a Sample
+                        </a>
+                    </div>
+                </div>
 
                 {loaded && (
                     <div ref={scrollIndicatorRef} className="scroll-indicator">

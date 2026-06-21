@@ -27,6 +27,14 @@ export default function ContactSection() {
                     <a href="tel:+919820780452" className="contact-link">
                         +91 98207 80452
                     </a>
+                    <a
+                        href="https://wa.me/919820780452?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%20specialty%20chemical%20additives."
+                        className="contact-link contact-link--whatsapp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Chat on WhatsApp
+                    </a>
                     <p className="contact-meta">Monday to Saturday, 9 AM to 6 PM IST</p>
                 </GlassCard>
 

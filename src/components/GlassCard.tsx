@@ -10,12 +10,16 @@ interface GlassCardProps {
     children: React.ReactNode;
     className?: string;
     delay?: number;
+    style?: React.CSSProperties;
+    id?: string;
 }
 
 export default function GlassCard({
     children,
     className = "",
     delay = 0,
+    style,
+    id,
 }: GlassCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
 
@@ -61,7 +65,7 @@ export default function GlassCard({
     }, [delay]);
 
     return (
-        <div ref={cardRef} className={`glass-card ${className}`}>
+        <div ref={cardRef} className={`glass-card ${className}`} style={style} id={id}>
             {children}
         </div>
     );

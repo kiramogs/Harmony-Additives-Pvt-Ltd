@@ -1,14 +1,26 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const NAV_LINKS = [
+    { label: "About", href: "/about-us/" },
+    { label: "Industries", href: "/industry/" },
+    { label: "Products", href: "/products/" },
+    { label: "Blog", href: "/blog/" },
+    { label: "Ask Expert", href: "/ask-expert/" },
+];
+
 export default function Navbar() {
     const navRef = useRef<HTMLElement>(null);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const pathname = usePathname();
+    const isHomepage = pathname === "/";
 
     useEffect(() => {
         if (!navRef.current) return;
@@ -17,7 +29,7 @@ export default function Navbar() {
             "(prefers-reduced-motion: reduce)"
         ).matches;
 
-        if (prefersReducedMotion) {
+        if (!isHomepage || prefersReducedMotion) {
             gsap.set(navRef.current, { y: 0, opacity: 1 });
             return;
         }
@@ -41,9 +53,8 @@ export default function Navbar() {
         }, navRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [isHomepage]);
 
-    // Close mobile menu on resize to desktop
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth > 768) setMobileOpen(false);
@@ -52,7 +63,6 @@ export default function Navbar() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Lock body scroll when mobile menu is open
     useEffect(() => {
         document.body.style.overflow = mobileOpen ? "hidden" : "";
         return () => { document.body.style.overflow = ""; };
@@ -64,7 +74,7 @@ export default function Navbar() {
         <>
             <nav ref={navRef} className="glass-navbar">
                 <div className="nav-inner">
-                    <div className="nav-logo">
+                    <Link href="/" className="nav-logo" aria-label="Harmony Additives — Home">
                         <div className="nav-logo-icon">
                             <img
                                 src="/hlogo.png"
@@ -76,20 +86,31 @@ export default function Navbar() {
                             />
                         </div>
                         <span className="nav-brand">Harmony Additives</span>
-                    </div>
+                    </Link>
 
                     <ul className="nav-links">
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#industries">Industries</a></li>
-                        <li><a href="#products">Products</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        {NAV_LINKS.map((link) => (
+                            <li key={link.href}>
+                                <Link
+                                    href={link.href}
+                                    className={pathname === link.href || pathname.startsWith(link.href.replace(/\/$/, "")) ? "nav-link-active" : ""}
+                                >
+                                    {link.label}
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
 
-                    <a href="tel:+919820780452" className="nav-cta nav-cta--desktop">
+                    <a
+                        href="https://wa.me/919820780452?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%20specialty%20chemical%20additives."
+                        className="nav-cta nav-cta--desktop"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Chat on WhatsApp"
+                    >
                         Get a Quote
                     </a>
 
-                    {/* Hamburger button — mobile only */}
                     <button
                         className={`nav-hamburger ${mobileOpen ? "nav-hamburger--open" : ""}`}
                         onClick={() => setMobileOpen(!mobileOpen)}
@@ -103,7 +124,6 @@ export default function Navbar() {
                 </div>
             </nav>
 
-            {/* Mobile slide-in menu */}
             <div
                 className={`mobile-menu-overlay ${mobileOpen ? "mobile-menu-overlay--visible" : ""}`}
                 onClick={() => setMobileOpen(false)}
@@ -111,12 +131,21 @@ export default function Navbar() {
             />
             <div className={`mobile-menu ${mobileOpen ? "mobile-menu--open" : ""}`}>
                 <ul className="mobile-menu-links">
-                    <li><a href="#about" onClick={handleNavClick}>About</a></li>
-                    <li><a href="#industries" onClick={handleNavClick}>Industries</a></li>
-                    <li><a href="#products" onClick={handleNavClick}>Products</a></li>
-                    <li><a href="#contact" onClick={handleNavClick}>Contact</a></li>
+                    {NAV_LINKS.map((link) => (
+                        <li key={link.href}>
+                            <Link href={link.href} onClick={handleNavClick}>
+                                {link.label}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
-                <a href="tel:+919820780452" className="nav-cta mobile-menu-cta" onClick={handleNavClick}>
+                <a
+                    href="https://wa.me/919820780452?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%20specialty%20chemical%20additives."
+                    className="nav-cta mobile-menu-cta"
+                    onClick={handleNavClick}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     Get a Quote
                 </a>
             </div>
