@@ -6,7 +6,7 @@ import ProductGrid from "@/components/ProductGrid";
 import { getProductsByCategory } from "@/data/products";
 
 export const metadata: Metadata = {
-    title: "Specialty & Tailor-Made Chemical Additives — Custom Formulations",
+    title: "Specialty & Tailor-Made Additives",
     description:
         "22 specialty additives including water repellents, optical brighteners, anti-skinning agents & ETP flocculants. Custom development in 2–4 weeks. APEO-free. Mumbai since 1996.",
     alternates: { canonical: "/products/specialty-tailor-made/" },

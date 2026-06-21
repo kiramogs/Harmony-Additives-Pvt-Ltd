@@ -6,7 +6,7 @@ import ProductGrid from "@/components/ProductGrid";
 import { getProductsByCategory } from "@/data/products";
 
 export const metadata: Metadata = {
-    title: "Industrial Emulsifier Manufacturer India — 15 Products",
+    title: "Industrial Emulsifier Manufacturer India",
     description:
         "15 anionic, non-ionic, cationic & biodegradable emulsifiers for agrochemicals, paints & metalworking fluids. APEO-free. ISO-certified Mumbai manufacturer since 1996.",
     alternates: { canonical: "/products/emulsifiers/" },

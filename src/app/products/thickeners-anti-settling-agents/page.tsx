@@ -6,7 +6,7 @@ import ProductGrid from "@/components/ProductGrid";
 import { getProductsByCategory } from "@/data/products";
 
 export const metadata: Metadata = {
-    title: "Thickeners & Anti-Settling Agents for Coatings & Inks",
+    title: "Thickeners & Anti-Settling Agents",
     description:
         "27 rheology modifiers — cellulosic, acrylic (HASE), polyurethane (HEUR) & powder thickeners for paints, inks, detergents & construction. APEO-free. Mumbai manufacturer.",
     alternates: { canonical: "/products/thickeners-anti-settling-agents/" },

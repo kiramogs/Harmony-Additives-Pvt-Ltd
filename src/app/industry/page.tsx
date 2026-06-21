@@ -5,7 +5,7 @@ import GlassCard from "@/components/GlassCard";
 import { industries } from "@/data/industries";
 
 export const metadata: Metadata = {
-    title: "Chemical Additives by Industry — Paint, Inks, Paper, Textile & More",
+    title: "Chemical Additives by Industry",
     description:
         "Find specialty chemical additives for your industry: paint & coating, printing inks, pulp & paper, textile, construction, agro & more. Mumbai manufacturer since 1996.",
     alternates: { canonical: "/industry/" },

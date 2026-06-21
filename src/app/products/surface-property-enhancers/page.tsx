@@ -6,7 +6,7 @@ import ProductGrid from "@/components/ProductGrid";
 import { getProductsByCategory } from "@/data/products";
 
 export const metadata: Metadata = {
-    title: "Surface Property Enhancers — Leveling, Slip & Scratch Resistance",
+    title: "Surface Property Enhancers for Coatings",
     description:
         "11 silicone leveling agents & PE wax dispersions for paint, inks & coatings. Mar-scratch resistance, surface slip & gloss improvement. APEO-free. Mumbai manufacturer since 1996.",
     alternates: { canonical: "/products/surface-property-enhancers/" },

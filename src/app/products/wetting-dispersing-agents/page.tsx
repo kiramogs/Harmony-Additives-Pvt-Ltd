@@ -6,7 +6,7 @@ import ProductGrid from "@/components/ProductGrid";
 import { getProductsByCategory } from "@/data/products";
 
 export const metadata: Metadata = {
-    title: "Wetting & Dispersing Agents for Paint, Ink & Coatings",
+    title: "Wetting & Dispersing Agents for Coatings",
     description:
         "28 wetting & dispersing agents for paints, inks, textiles & agrochemicals. Grades for carbon black, TiO2, organic pigments. APEO-free. Mumbai manufacturer since 1996.",
     alternates: { canonical: "/products/wetting-dispersing-agents/" },

@@ -4,7 +4,7 @@ import InnerLayout from "@/components/InnerLayout";
 import GlassCard from "@/components/GlassCard";
 
 export const metadata: Metadata = {
-    title: "About Harmony Additives — Specialty Chemical Manufacturer Since 1996",
+    title: "About Us — Specialty Chemicals Since 1996",
     description:
         "Mumbai-based manufacturer & exporter of specialty chemicals. 30 years serving paint, ink, paper, textile & construction industries globally. ISO 9001 & 14001 certified.",
     alternates: { canonical: "/about-us/" },
