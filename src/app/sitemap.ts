@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { industries } from "@/data/industries";
 import { CATEGORY_META } from "@/data/products";
+import { posts } from "@/data/blog";
 
 const BASE = "https://harmonyadditive.in";
 
@@ -30,5 +31,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.8,
     }));
 
-    return [...staticPages, ...categoryPages, ...industryPages];
+    const blogPages: MetadataRoute.Sitemap = posts.map((p) => ({
+        url: `${BASE}/blog/${p.slug}/`,
+        lastModified: new Date(p.dateISO),
+        changeFrequency: "yearly",
+        priority: 0.6,
+    }));
+
+    return [...staticPages, ...categoryPages, ...industryPages, ...blogPages];
 }

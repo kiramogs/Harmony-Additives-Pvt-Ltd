@@ -170,9 +170,19 @@ export default function ProductGrid({
 
                             <div className="pg-card-actions">
                                 <Link
-                                    href={`/ask-expert/?product=${encodeURIComponent(product.name)}&category=${product.categorySlug}`}
+                                    href="/ask-expert/"
                                     className="pg-btn pg-btn--primary"
                                     style={{ "--btn-accent": accentColor } as React.CSSProperties}
+                                    onClick={() => {
+                                        // Pass product context via sessionStorage instead of query params,
+                                        // so we don't create 173 crawlable parameterised URLs (SEO).
+                                        try {
+                                            sessionStorage.setItem(
+                                                "ha_prefill",
+                                                JSON.stringify({ product: product.name, category: product.categorySlug })
+                                            );
+                                        } catch { /* sessionStorage unavailable — prefill simply skipped */ }
+                                    }}
                                 >
                                     Request Sample
                                 </Link>

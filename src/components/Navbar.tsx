@@ -77,7 +77,7 @@ export default function Navbar() {
                     <Link href="/" className="nav-logo" aria-label="Harmony Additives — Home">
                         <div className="nav-logo-icon">
                             <img
-                                src="/hlogo.png"
+                                src="/hlogo.webp"
                                 alt="Harmony Additives Logo"
                                 width="40"
                                 height="40"

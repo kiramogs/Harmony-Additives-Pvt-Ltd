@@ -52,21 +52,25 @@ export default function AskExpertClient() {
     const [prefillMessage, setPrefillMessage] = useState("");
     const [prefillRequestType, setPrefillRequestType] = useState("sample");
 
-    // Read ?product= and ?category= from the URL (set by ProductGrid "Request Sample" links).
-    // Using window.location avoids the Suspense boundary that useSearchParams requires for static export.
+    // Read product context from sessionStorage (set by ProductGrid "Request Sample" links).
+    // Using sessionStorage instead of query params keeps internal links clean — no
+    // parameterised/canonicalised URLs flooding the crawl.
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const product = params.get("product");
-        const category = params.get("category");
-        if (category && CATEGORY_SLUG_TO_LABEL[category]) {
-            setPrefillCategory(CATEGORY_SLUG_TO_LABEL[category]);
-        }
-        if (product) {
-            setPrefillRequestType("sample");
-            setPrefillMessage(
-                `I would like to request a sample and technical data sheet for: ${product}.\n\nApplication / system details: `
-            );
-        }
+        try {
+            const raw = sessionStorage.getItem("ha_prefill");
+            if (!raw) return;
+            sessionStorage.removeItem("ha_prefill");
+            const { product, category } = JSON.parse(raw) as { product?: string; category?: string };
+            if (category && CATEGORY_SLUG_TO_LABEL[category]) {
+                setPrefillCategory(CATEGORY_SLUG_TO_LABEL[category]);
+            }
+            if (product) {
+                setPrefillRequestType("sample");
+                setPrefillMessage(
+                    `I would like to request a sample and technical data sheet for: ${product}.\n\nApplication / system details: `
+                );
+            }
+        } catch { /* ignore malformed prefill data */ }
     }, []);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

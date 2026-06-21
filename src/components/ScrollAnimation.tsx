@@ -23,7 +23,7 @@ interface DrawMetrics {
 
 function getFramePath(index: number): string {
     const padded = String(index).padStart(3, "0");
-    return `/frames/HAHS_${padded}.jpg`;
+    return `/frames/HAHS_${padded}.webp`;
 }
 
 export default function ScrollAnimation() {
