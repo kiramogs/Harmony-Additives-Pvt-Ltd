@@ -25,7 +25,7 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: {
-    default: "Specialty Chemical Additives Manufacturer India | Harmony Additives",
+    default: "Chemical Additives Manufacturer India | Harmony Additives",
     template: "%s | Harmony Additives",
   },
   description:

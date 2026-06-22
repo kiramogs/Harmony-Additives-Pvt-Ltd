@@ -125,7 +125,7 @@ export default function IndustriesSection() {
             <div className="section-header">
                 <GlassCard className="section-title-card">
                     <span className="section-label">Industries</span>
-                    <h2 className="section-title">Where Our Products Go</h2>
+                    <h2 className="section-title">Industries We Supply Additives To</h2>
                     <p className="section-subtitle">
                         We supply additives to over 10 sectors, each with its own
                         formulation requirements. Here is where our chemicals end up.

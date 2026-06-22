@@ -81,7 +81,7 @@ export default function ProductsSection() {
             <div className="section-header">
                 <GlassCard className="section-title-card">
                     <span className="section-label">Products</span>
-                    <h2 className="section-title">What We Manufacture</h2>
+                    <h2 className="section-title">Our Specialty Chemical Additives</h2>
                     <p className="section-subtitle">
                         Additive blends for water-based and solvent-based systems.
                         Most products ship within 7 working days.

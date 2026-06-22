@@ -13,15 +13,21 @@ const nextConfig: NextConfig = {
     // Next's hydration bootstrap, inline JSON-LD, and inline component styles.
     // When NEXT_PUBLIC_GA_ID is set at build time, GA4 domains are auto-allowed.
     const gaOn = Boolean(process.env.NEXT_PUBLIC_GA_ID);
+    const fbOn = Boolean(process.env.NEXT_PUBLIC_FB_PIXEL_ID);
     const gtm = "https://www.googletagmanager.com";
     const ga = "https://www.google-analytics.com https://*.google-analytics.com";
+    const fbScript = "https://connect.facebook.net";
+    const fbConnImg = "https://www.facebook.com";
+    const scriptExtra = `${gaOn ? ` ${gtm}` : ""}${fbOn ? ` ${fbScript}` : ""}`;
+    const connectExtra = `${gaOn ? ` ${ga} ${gtm}` : ""}${fbOn ? ` ${fbConnImg}` : ""}`;
+    const imgExtra = `${gaOn ? ` ${ga} ${gtm}` : ""}${fbOn ? ` ${fbConnImg}` : ""}`;
     const csp = [
       "default-src 'self'",
-      `script-src 'self' 'unsafe-inline'${gaOn ? ` ${gtm}` : ""}`,
+      `script-src 'self' 'unsafe-inline'${scriptExtra}`,
       "style-src 'self' 'unsafe-inline'",
-      `img-src 'self' data: blob:${gaOn ? ` ${ga} ${gtm}` : ""}`,
+      `img-src 'self' data: blob:${imgExtra}`,
       "font-src 'self'",
-      `connect-src 'self'${gaOn ? ` ${ga} ${gtm}` : ""}`,
+      `connect-src 'self'${connectExtra}`,
       "media-src 'self'",
       "frame-ancestors 'self'",
       "base-uri 'self'",
