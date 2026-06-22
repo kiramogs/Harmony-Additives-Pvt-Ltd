@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import InnerLayout from "@/components/InnerLayout";
 import GlassCard from "@/components/GlassCard";
+import ProductGrid from "@/components/ProductGrid";
+import { products } from "@/data/products";
 
 export const metadata: Metadata = {
     title: "Chemical Additives — 173 Products",
@@ -66,12 +68,12 @@ const productSchema = {
     "@type": "ItemList",
     name: "Specialty Chemical Additives by Harmony Additives",
     description: "Complete range of 173 specialty chemical additives across 6 categories",
-    numberOfItems: 6,
-    itemListElement: categories.map((cat, i) => ({
+    numberOfItems: products.length,
+    itemListElement: products.map((p, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        name: cat.name,
-        url: `https://harmonyadditive.in/products/${cat.slug}/`,
+        name: `${p.name} — ${p.type}`,
+        url: `https://harmonyadditive.in/product/${p.slug}/`,
     })),
 };
 
@@ -120,9 +122,25 @@ export default function ProductsPage() {
                 </GlassCard>
             </section>
 
+            {/* Global product finder — search all 173 by code, type, or industry */}
+            <section className="inner-section" id="find-a-product" style={{ scrollMarginTop: "90px" }}>
+                <h2 className="inner-section-title">Find a Product</h2>
+                <p className="pg-section-note">
+                    Search the full catalogue of <strong>173 APEO-free grades</strong> by product code, chemistry,
+                    or industry — or filter by category. Open any product for specs, applications, and a sample request.
+                </p>
+                <ProductGrid
+                    products={products}
+                    showSearch
+                    showCategoryFilter
+                    showIndustryFilter
+                    seedFromSession
+                />
+            </section>
+
             {/* Category grid */}
             <section className="inner-section">
-                <h2 className="inner-section-title">Browse by Product Category</h2>
+                <h2 className="inner-section-title">Or Browse by Product Category</h2>
                 <div className="category-grid">
                     {categories.map((cat) => (
                         <Link

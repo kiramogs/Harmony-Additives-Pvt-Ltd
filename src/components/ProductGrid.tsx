@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import type { Product } from "@/data/products";
 
@@ -23,6 +23,9 @@ interface ProductGridProps {
     accentColor?: string;
     showSearch?: boolean;
     showIndustryFilter?: boolean;
+    showCategoryFilter?: boolean;
+    /** When true, seed the search box from sessionStorage "ha_psearch" (hero hand-off). */
+    seedFromSession?: boolean;
 }
 
 export default function ProductGrid({
@@ -30,9 +33,36 @@ export default function ProductGrid({
     accentColor = "#0369A1",
     showSearch = true,
     showIndustryFilter = true,
+    showCategoryFilter = false,
+    seedFromSession = false,
 }: ProductGridProps) {
     const [query, setQuery] = useState("");
     const [industryFilter, setIndustryFilter] = useState<string>("all");
+    const [categoryFilter, setCategoryFilter] = useState<string>("all");
+
+    // Seed the query from the homepage hero search (passed via sessionStorage,
+    // not a URL param — keeps the page canonical and crawl-clean).
+    useEffect(() => {
+        if (!seedFromSession) return;
+        try {
+            const q = sessionStorage.getItem("ha_psearch");
+            if (q) {
+                sessionStorage.removeItem("ha_psearch");
+                setQuery(q);
+            }
+        } catch { /* ignore */ }
+    }, [seedFromSession]);
+
+    // Unique categories present, with counts
+    const categories = useMemo(() => {
+        const map = new Map<string, { label: string; slug: string; count: number }>();
+        for (const p of products) {
+            const existing = map.get(p.categorySlug);
+            if (existing) existing.count++;
+            else map.set(p.categorySlug, { label: p.category, slug: p.categorySlug, count: 1 });
+        }
+        return Array.from(map.values()).sort((a, b) => b.count - a.count);
+    }, [products]);
 
     // Unique industries across these products, with counts, sorted by frequency
     const industries = useMemo(() => {
@@ -59,11 +89,14 @@ export default function ProductGrid({
                     p.industries.some((i) => i.label.toLowerCase().includes(q))
             );
         }
+        if (categoryFilter !== "all") {
+            list = list.filter((p) => p.categorySlug === categoryFilter);
+        }
         if (industryFilter !== "all") {
             list = list.filter((p) => p.industries.some((i) => i.slug === industryFilter));
         }
         return list;
-    }, [products, query, industryFilter]);
+    }, [products, query, industryFilter, categoryFilter]);
 
     return (
         <div className="product-grid-wrapper">
@@ -96,6 +129,29 @@ export default function ProductGrid({
                             ? `${products.length} products`
                             : `${filtered.length} of ${products.length}`}
                     </p>
+                </div>
+            )}
+
+            {/* Category filter chips */}
+            {showCategoryFilter && categories.length > 1 && (
+                <div className="pg-filters" role="group" aria-label="Filter by product category">
+                    <button
+                        className={`pg-chip ${categoryFilter === "all" ? "pg-chip--active" : ""}`}
+                        onClick={() => setCategoryFilter("all")}
+                        style={categoryFilter === "all" ? ({ "--chip-accent": accentColor } as React.CSSProperties) : {}}
+                    >
+                        All Categories
+                    </button>
+                    {categories.map((cat) => (
+                        <button
+                            key={cat.slug}
+                            className={`pg-chip ${categoryFilter === cat.slug ? "pg-chip--active" : ""}`}
+                            onClick={() => setCategoryFilter(cat.slug)}
+                            style={categoryFilter === cat.slug ? ({ "--chip-accent": accentColor } as React.CSSProperties) : {}}
+                        >
+                            {cat.label} <span className="pg-chip-count">{cat.count}</span>
+                        </button>
+                    ))}
                 </div>
             )}
 
@@ -132,7 +188,7 @@ export default function ProductGrid({
                         <Link href="/ask-expert/" className="pg-empty-link">ask our chemists</Link>
                         {" "}for a recommendation.
                     </p>
-                    <button className="pg-empty-reset" onClick={() => { setQuery(""); setIndustryFilter("all"); }}>
+                    <button className="pg-empty-reset" onClick={() => { setQuery(""); setIndustryFilter("all"); setCategoryFilter("all"); }}>
                         Clear filters
                     </button>
                 </div>
@@ -141,6 +197,11 @@ export default function ProductGrid({
                     {filtered.map((product) => (
                         <article key={product.id + product.name} className="pg-card">
                             <div className="pg-card-header">
+                                {showCategoryFilter && (
+                                    <Link href={`/products/${product.categorySlug}/`} className="pg-card-cat">
+                                        {product.category}
+                                    </Link>
+                                )}
                                 <span
                                     className="pg-system-badge"
                                     style={{ "--badge-color": SYSTEM_COLORS[product.system] ?? "#64748B" } as React.CSSProperties}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HeroSearch from "./HeroSearch";
 
 const stats = [
     { value: "1996", label: "Founded" },
@@ -36,6 +37,7 @@ export default function Hero() {
                         Request a Sample
                     </Link>
                 </div>
+                <HeroSearch />
                 <ul className="hero-stats">
                     {stats.map((s) => (
                         <li key={s.label} className="hero-stat">
