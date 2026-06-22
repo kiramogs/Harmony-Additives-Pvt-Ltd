@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             url: `https://harmonyadditive.in/blog/${post.slug}/`,
             publishedTime: post.dateISO,
             authors: [authorOf(post).name],
+            images: [{ url: `https://harmonyadditive.in/images/blog/${post.slug}.webp`, alt: post.title }],
         },
     };
 }
@@ -53,7 +54,7 @@ export default async function BlogPostPage({ params }: Props) {
             "@type": "WebPage",
             "@id": `https://harmonyadditive.in/blog/${post.slug}/`,
         },
-        image: "https://harmonyadditive.in/hlogo.png",
+        image: `https://harmonyadditive.in/images/blog/${post.slug}.webp`,
     };
 
     // Up to 3 related posts from the same category
@@ -64,6 +65,7 @@ export default async function BlogPostPage({ params }: Props) {
             heroTitle={post.title}
             heroSubtitle={post.excerpt}
             heroEyebrow={`${post.category} · ${post.date} · ${post.readTime} read`}
+            heroImage={{ src: `/images/blog/${post.slug}.webp`, alt: post.title }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Blog", href: "/blog/" },
@@ -122,6 +124,10 @@ export default async function BlogPostPage({ params }: Props) {
                         {related.map((p) => (
                             <Link key={p.slug} href={`/blog/${p.slug}/`} style={{ textDecoration: "none" }}>
                                 <GlassCard className="blog-card">
+                                    <span className="blog-card-thumb">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={`/images/blog/${p.slug}.webp`} alt={p.title} width={400} height={225} loading="lazy" decoding="async" />
+                                    </span>
                                     <div className="blog-card-meta">
                                         <span className="blog-card-tag">{p.category}</span>
                                         <span className="blog-card-date">{p.readTime} read</span>

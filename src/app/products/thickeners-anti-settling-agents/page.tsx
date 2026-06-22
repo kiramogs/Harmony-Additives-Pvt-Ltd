@@ -14,6 +14,7 @@ export const metadata: Metadata = {
         title: "Thickeners & Anti-Settling Agents for Coatings & Inks | Harmony Additives",
         description: "27 thickeners and anti-settling agents for paint, ink, detergent, and construction from Mumbai-based Harmony Additives.",
         url: "https://harmonyadditive.in/products/thickeners-anti-settling-agents/",
+        images: [{ url: "https://harmonyadditive.in/images/category/thickeners-anti-settling-agents.webp", alt: "Thickeners & anti-settling agents by Harmony Additives" }],
     },
 };
 
@@ -64,6 +65,7 @@ export default function ThickenersPage() {
             heroTitle="Thickeners & Anti-Settling Agents"
             heroSubtitle="27 rheology modifiers — cellulosic, HASE acrylic, HEUR polyurethane, and powder types. Paints, inks, detergents, personal care, and construction chemicals. APEO-free."
             heroEyebrow="27 Products · HASE · HEUR · Cellulosic · Powder · APEO-Free"
+            heroImage={{ src: "/images/category/thickeners-anti-settling-agents.webp", alt: "Thickeners and anti-settling agents for coatings, inks and detergents" }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Products", href: "/products/" },

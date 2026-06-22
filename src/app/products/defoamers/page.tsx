@@ -15,6 +15,7 @@ export const metadata: Metadata = {
         description:
             "Mumbai-based manufacturer of 70+ silicone, mineral-oil & polyether defoamers. APEO-free. ISO 9001 certified since 1996.",
         url: "https://harmonyadditive.in/products/defoamers/",
+        images: [{ url: "https://harmonyadditive.in/images/category/defoamers.webp", alt: "Defoamers & antifoams by Harmony Additives" }],
     },
 };
 
@@ -73,6 +74,7 @@ export default function DefoamersPage() {
             heroTitle="Defoamers & Antifoams"
             heroSubtitle="70 foam-control agents for aqueous and non-aqueous systems — silicone, mineral-oil, and polyether chemistries. All APEO-free. ISO 9001 certified."
             heroEyebrow="70 Products · Silicone · Mineral Oil · Polyether · APEO-Free"
+            heroImage={{ src: "/images/category/defoamers.webp", alt: "Harmony Additives defoamers and antifoams for industrial use" }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Products", href: "/products/" },

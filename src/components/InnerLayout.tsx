@@ -15,6 +15,7 @@ interface InnerLayoutProps {
     heroEyebrow?: string;
     breadcrumbs: BreadcrumbItem[];
     heroActions?: React.ReactNode;
+    heroImage?: { src: string; alt: string };
 }
 
 const breadcrumbSchema = (items: BreadcrumbItem[]) => ({
@@ -35,6 +36,7 @@ export default function InnerLayout({
     heroEyebrow,
     breadcrumbs,
     heroActions,
+    heroImage,
 }: InnerLayoutProps) {
     return (
         <div className="inner-page">
@@ -94,6 +96,20 @@ export default function InnerLayout({
                         <div className="inner-hero-actions">{heroActions}</div>
                     )}
                 </div>
+
+                {heroImage && (
+                    <div className="inner-hero-image">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src={heroImage.src}
+                            alt={heroImage.alt}
+                            width={1100}
+                            height={420}
+                            decoding="async"
+                            fetchPriority="high"
+                        />
+                    </div>
+                )}
             </header>
 
             {/* Page content */}

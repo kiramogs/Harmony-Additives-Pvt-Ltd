@@ -51,6 +51,7 @@ export default function AboutPage() {
             heroTitle="About Harmony Additives"
             heroSubtitle="From a single lab in Mumbai in 1996 to three production facilities, 500+ active accounts, and 13 export countries. Built on chemistry and consistency."
             heroEyebrow="Est. 1996 · ISO 9001 & 14001 · Mumbai, India"
+            heroImage={{ src: "/images/company/about.webp", alt: "Harmony Additives — specialty chemical manufacturing in Mumbai since 1996" }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "About Us" },
@@ -110,6 +111,20 @@ export default function AboutPage() {
                 </GlassCard>
             </section>
 
+            {/* Mission & Values visuals */}
+            <section className="inner-section">
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem" }}>
+                    <figure className="about-figure">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/images/company/mission.webp" alt="Harmony Additives mission — meeting customer requirements with on-time service" width={1000} height={600} loading="lazy" decoding="async" />
+                    </figure>
+                    <figure className="about-figure">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/images/company/values.webp" alt="Harmony Additives values — quality, continuous improvement and a healthy workplace" width={1000} height={600} loading="lazy" decoding="async" />
+                    </figure>
+                </div>
+            </section>
+
             {/* Stats */}
             <section className="inner-section">
                 <h2 className="inner-section-title">By the Numbers</h2>
@@ -160,6 +175,10 @@ export default function AboutPage() {
             {/* Certifications */}
             <section className="inner-section">
                 <h2 className="inner-section-title">Certifications</h2>
+                <figure className="about-figure" style={{ maxWidth: "520px", margin: "0 0 1.5rem" }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/company/iso-certificate.webp" alt="Harmony Additives ISO 9001 and ISO 14001 certificate" width={1200} height={850} loading="lazy" decoding="async" />
+                </figure>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.25rem" }}>
                     {certifications.map((cert) => (
                         <GlassCard key={cert.name} style={{ padding: "2rem" }}>
@@ -230,6 +249,16 @@ export default function AboutPage() {
                             Our technical team contributes articles and presentations to industry journals and conferences,
                             covering topics in defoamer selection, dispersant chemistry, and specialty additive formulation.
                         </p>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.25rem", marginTop: "1.5rem" }}>
+                            <figure className="about-figure">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src="/images/events/paint-india-2024.webp" alt="Harmony Additives at Paint India 2024" width={1000} height={667} loading="lazy" decoding="async" />
+                            </figure>
+                            <figure className="about-figure">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src="/images/events/aipima-2024.webp" alt="Harmony Additives at AIPIMA 2024" width={1000} height={667} loading="lazy" decoding="async" />
+                            </figure>
+                        </div>
                     </div>
                 </GlassCard>
             </section>

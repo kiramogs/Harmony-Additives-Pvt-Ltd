@@ -62,6 +62,10 @@ export default function BlogPage() {
                 <h2 className="inner-section-title">Latest Article</h2>
                 <Link href={`/blog/${featured.slug}/`} style={{ textDecoration: "none" }}>
                     <GlassCard className="blog-featured-card">
+                        <span className="blog-card-thumb">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={`/images/blog/${featured.slug}.webp`} alt={featured.title} width={1200} height={675} loading="lazy" decoding="async" />
+                        </span>
                         <div className="blog-card-meta">
                             <span className="blog-card-tag">{featured.category}</span>
                             <span className="blog-card-date">{featured.date} · {featured.readTime} read</span>
@@ -93,6 +97,10 @@ export default function BlogPage() {
                     {posts.slice(1).map((post) => (
                         <Link key={post.slug} href={`/blog/${post.slug}/`} style={{ textDecoration: "none" }}>
                             <GlassCard className="blog-card">
+                                <span className="blog-card-thumb">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={`/images/blog/${post.slug}.webp`} alt={post.title} width={400} height={225} loading="lazy" decoding="async" />
+                                </span>
                                 <div className="blog-card-meta">
                                     <span className="blog-card-tag">{post.category}</span>
                                     <span className="blog-card-date">{post.readTime} read</span>

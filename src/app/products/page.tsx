@@ -131,6 +131,10 @@ export default function ProductsPage() {
                             style={{ textDecoration: "none" }}
                         >
                             <GlassCard className="category-card">
+                                <span className="card-thumb">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={`/images/category/${cat.slug}.webp`} alt={`${cat.name} — Harmony Additives`} width={400} height={225} loading="lazy" decoding="async" />
+                                </span>
                                 <span className="category-card-count">{cat.count} Products</span>
                                 <h3 className="category-card-title">{cat.name}</h3>
                                 <p className="category-card-desc">{cat.desc}</p>

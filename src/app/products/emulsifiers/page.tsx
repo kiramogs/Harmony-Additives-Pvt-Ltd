@@ -14,6 +14,7 @@ export const metadata: Metadata = {
         title: "Industrial Emulsifier Manufacturer India — 15 Products | Harmony Additives",
         description: "Anionic and non-ionic emulsifiers for stable oil-in-water and water-in-oil formulations. APEO-free. Mumbai since 1996.",
         url: "https://harmonyadditive.in/products/emulsifiers/",
+        images: [{ url: "https://harmonyadditive.in/images/category/emulsifiers.webp", alt: "Industrial emulsifiers by Harmony Additives" }],
     },
 };
 
@@ -64,6 +65,7 @@ export default function EmulsifiersPage() {
             heroTitle="Industrial Emulsifiers"
             heroSubtitle="15 anionic, non-ionic, cationic, and biodegradable emulsifier grades. Stable O/W and W/O formulations for agrochemicals, paints, metalworking, and more. APEO-free."
             heroEyebrow="15 Products · Anionic · Non-Ionic · Biodegradable · APEO-Free"
+            heroImage={{ src: "/images/category/emulsifiers.webp", alt: "Industrial emulsifiers for agrochemicals, paints and metalworking fluids" }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Products", href: "/products/" },

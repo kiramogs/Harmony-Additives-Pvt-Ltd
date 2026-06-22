@@ -47,6 +47,10 @@ export default function IndustryPage() {
                     {industries.map((ind) => (
                         <Link key={ind.slug} href={`/industry/${ind.slug}/`} style={{ textDecoration: "none" }}>
                             <GlassCard className="industry-inner-card">
+                                <span className="industry-inner-thumb">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={`/images/industry/${ind.slug}.webp`} alt={`Chemical additives for ${ind.name}`} width={96} height={96} loading="lazy" decoding="async" />
+                                </span>
                                 <div className="industry-inner-text">
                                     <p className="industry-inner-count">{ind.count} Products</p>
                                     <h2 className="industry-inner-title">{ind.name}</h2>

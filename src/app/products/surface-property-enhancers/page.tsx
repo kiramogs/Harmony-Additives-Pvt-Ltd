@@ -14,6 +14,7 @@ export const metadata: Metadata = {
         title: "Surface Property Enhancer Additives — Leveling, Slip & Scratch Resistance | Harmony Additives",
         description: "Silicone leveling agents and PE wax dispersions for improved surface feel, gloss, and scratch resistance in coatings and inks.",
         url: "https://harmonyadditive.in/products/surface-property-enhancers/",
+        images: [{ url: "https://harmonyadditive.in/images/category/surface-property-enhancers.webp", alt: "Surface property enhancers by Harmony Additives" }],
     },
 };
 
@@ -25,6 +26,7 @@ export default function SurfacePropertyEnhancers() {
             heroTitle="Surface Property Enhancers"
             heroSubtitle="Silicone leveling agents, polyethylene wax dispersions, and mar-scratch resistance additives for premium surface feel, gloss, and film protection in coatings and inks."
             heroEyebrow="11 Products · Leveling · Slip · Mar-Scratch · PE Wax · APEO-Free"
+            heroImage={{ src: "/images/category/surface-property-enhancers.webp", alt: "Surface property enhancers — leveling agents and wax dispersions for coatings" }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Products", href: "/products/" },

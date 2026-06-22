@@ -14,6 +14,7 @@ export const metadata: Metadata = {
         title: "Specialty & Tailor-Made Chemical Additives | Harmony Additives",
         description: "Custom chemical additive development and 22 specialty products. 2–4 week sample turnaround from ISO-certified Mumbai lab. APEO-free.",
         url: "https://harmonyadditive.in/products/specialty-tailor-made/",
+        images: [{ url: "https://harmonyadditive.in/images/category/specialty-tailor-made.webp", alt: "Specialty & tailor-made additives by Harmony Additives" }],
     },
 };
 
@@ -25,6 +26,7 @@ export default function SpecialtyTailorMade() {
             heroTitle="Specialty & Tailor-Made Additives"
             heroSubtitle="22 specialty products — water repellents, optical brighteners, anti-skinning agents, ETP flocculants, flow polymers, and more. Plus custom development to your specification in 2–4 weeks."
             heroEyebrow="22 Products · Custom Development · NDA Available · APEO-Free"
+            heroImage={{ src: "/images/category/specialty-tailor-made.webp", alt: "Specialty and tailor-made chemical additives by Harmony Additives" }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Products", href: "/products/" },

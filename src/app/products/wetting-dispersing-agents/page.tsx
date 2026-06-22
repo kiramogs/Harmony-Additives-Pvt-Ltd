@@ -14,6 +14,7 @@ export const metadata: Metadata = {
         title: "Wetting & Dispersing Agents for Paint, Ink & Coatings | Harmony Additives",
         description: "28 dispersing agents for organic and inorganic pigment systems. Reduce grinding time, stabilize dispersions. APEO-free.",
         url: "https://harmonyadditive.in/products/wetting-dispersing-agents/",
+        images: [{ url: "https://harmonyadditive.in/images/category/wetting-dispersing-agents.webp", alt: "Wetting & dispersing agents by Harmony Additives" }],
     },
 };
 
@@ -64,6 +65,7 @@ export default function WettingDispersing() {
             heroTitle="Wetting & Dispersing Agents"
             heroSubtitle="28 grades for organic and inorganic pigment systems. Dedicated grades for carbon black, TiO2, fluorescent pigments, and paste inks. All APEO-free."
             heroEyebrow="28 Products · Carbon Black · TiO2 · Fluorescent · APEO-Free"
+            heroImage={{ src: "/images/category/wetting-dispersing-agents.webp", alt: "Wetting and dispersing agents for paints, inks and coatings" }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Products", href: "/products/" },

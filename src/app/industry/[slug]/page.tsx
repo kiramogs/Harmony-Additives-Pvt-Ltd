@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             title: `${industry.metaTitle} | Harmony Additives`,
             description: industry.metaDesc,
             url: `https://harmonyadditive.in/industry/${industry.slug}/`,
+            images: [{ url: `https://harmonyadditive.in/images/industry/${industry.slug}.webp`, alt: `Chemical additives for ${industry.name}` }],
         },
     };
 }
@@ -69,6 +70,7 @@ export default async function IndustrySubPage({ params }: Props) {
             heroTitle={`Chemical Additives for ${industry.name}`}
             heroSubtitle={industry.heroSubtitle}
             heroEyebrow={industry.eyebrow}
+            heroImage={{ src: `/images/industry/${slug}.webp`, alt: `Specialty chemical additives for the ${industry.name.toLowerCase()} industry` }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Industries", href: "/industry/" },

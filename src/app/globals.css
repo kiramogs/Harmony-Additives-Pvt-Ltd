@@ -2023,6 +2023,115 @@ body {
   flex-wrap: wrap;
 }
 
+/* ── Inner hero image (category / industry / blog banner) ── */
+.inner-hero-image {
+  max-width: 1100px;
+  margin: 2.5rem auto 0;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.12),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  aspect-ratio: 1100 / 420;
+  background: var(--color-bg-warm);
+}
+
+.inner-hero-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Blog card thumbnail ── */
+.blog-card-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  background: var(--color-bg-warm);
+}
+
+.blog-card-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blog-card:hover .blog-card-thumb img {
+  transform: scale(1.04);
+}
+
+/* ── Category/industry card image ── */
+.card-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0.85rem;
+  background: var(--color-bg-warm);
+}
+
+.card-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.category-card:hover .card-thumb img,
+.industry-inner-card:hover .card-thumb img {
+  transform: scale(1.04);
+}
+
+/* ── Industry overview card thumbnail (square, left of flex row) ── */
+.industry-inner-thumb {
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--color-bg-warm);
+}
+
+.industry-inner-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.industry-inner-card:hover .industry-inner-thumb img {
+  transform: scale(1.06);
+}
+
+/* ── About page figure ── */
+.about-figure {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+  margin: 0;
+}
+
+.about-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .inner-hero-image { margin-top: 1.75rem; border-radius: 16px; }
+}
+
 /* ── Inner Main Content ── */
 .inner-main {
   position: relative;
