@@ -64,7 +64,7 @@ export default function BlogPage() {
                     <GlassCard className="blog-featured-card">
                         <span className="blog-card-thumb">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={`/images/blog/${featured.slug}.webp`} alt={featured.title} width={1200} height={675} loading="lazy" decoding="async" />
+                            <img src={featured.image ?? `/images/blog/${featured.slug}.webp`} alt={featured.title} width={1200} height={675} loading="lazy" decoding="async" />
                         </span>
                         <div className="blog-card-meta">
                             <span className="blog-card-tag">{featured.category}</span>
@@ -99,7 +99,7 @@ export default function BlogPage() {
                             <GlassCard className="blog-card">
                                 <span className="blog-card-thumb">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={`/images/blog/${post.slug}.webp`} alt={post.title} width={400} height={225} loading="lazy" decoding="async" />
+                                    <img src={post.image ?? `/images/blog/${post.slug}.webp`} alt={post.title} width={400} height={225} loading="lazy" decoding="async" />
                                 </span>
                                 <div className="blog-card-meta">
                                     <span className="blog-card-tag">{post.category}</span>

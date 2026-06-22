@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             url: `https://harmonyadditive.in/blog/${post.slug}/`,
             publishedTime: post.dateISO,
             authors: [authorOf(post).name],
-            images: [{ url: `https://harmonyadditive.in/images/blog/${post.slug}.webp`, alt: post.title }],
+            images: [{ url: `https://harmonyadditive.in${post.image ?? `/images/blog/${post.slug}.webp`}`, alt: post.title }],
         },
     };
 }
@@ -39,6 +39,7 @@ export default async function BlogPostPage({ params }: Props) {
     if (!post) notFound();
 
     const author = authorOf(post);
+    const heroImg = post.image ?? `/images/blog/${post.slug}.webp`;
 
     const articleSchema = {
         "@context": "https://schema.org",
@@ -54,7 +55,7 @@ export default async function BlogPostPage({ params }: Props) {
             "@type": "WebPage",
             "@id": `https://harmonyadditive.in/blog/${post.slug}/`,
         },
-        image: `https://harmonyadditive.in/images/blog/${post.slug}.webp`,
+        image: `https://harmonyadditive.in${heroImg}`,
     };
 
     // Up to 3 related posts from the same category
@@ -65,7 +66,7 @@ export default async function BlogPostPage({ params }: Props) {
             heroTitle={post.title}
             heroSubtitle={post.excerpt}
             heroEyebrow={`${post.category} · ${post.date} · ${post.readTime} read`}
-            heroImage={{ src: `/images/blog/${post.slug}.webp`, alt: post.title }}
+            heroImage={{ src: heroImg, alt: post.title }}
             breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "Blog", href: "/blog/" },
@@ -96,8 +97,42 @@ export default async function BlogPostPage({ params }: Props) {
                                 {section.paragraphs.map((para, j) => (
                                     <p key={j}>{para}</p>
                                 ))}
+                                {section.table && (
+                                    <div className="article-table-wrap">
+                                        <table className="spec-table article-table">
+                                            <thead>
+                                                <tr>
+                                                    {section.table.headers.map((h) => <th key={h} scope="col">{h}</th>)}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {section.table.rows.map((row, r) => (
+                                                    <tr key={r}>
+                                                        {row.map((cell, c) => (
+                                                            c === 0
+                                                                ? <th key={c} scope="row">{cell}</th>
+                                                                : <td key={c}>{cell}</td>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
                             </section>
                         ))}
+
+                        {/* Curated internal links */}
+                        {post.internalLinks && post.internalLinks.length > 0 && (
+                            <div className="article-links">
+                                <strong>Related on Harmony Additives:</strong>
+                                <ul className="article-links-list">
+                                    {post.internalLinks.map((l) => (
+                                        <li key={l.href}><Link href={l.href}>{l.label}</Link></li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
 
                         {/* Inline internal links */}
                         {(post.relatedProductSlug || post.relatedIndustrySlug) && (
@@ -126,7 +161,7 @@ export default async function BlogPostPage({ params }: Props) {
                                 <GlassCard className="blog-card">
                                     <span className="blog-card-thumb">
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={`/images/blog/${p.slug}.webp`} alt={p.title} width={400} height={225} loading="lazy" decoding="async" />
+                                        <img src={p.image ?? `/images/blog/${p.slug}.webp`} alt={p.title} width={400} height={225} loading="lazy" decoding="async" />
                                     </span>
                                     <div className="blog-card-meta">
                                         <span className="blog-card-tag">{p.category}</span>

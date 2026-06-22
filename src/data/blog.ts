@@ -1,6 +1,18 @@
+export interface BlogTable {
+    caption?: string;
+    headers: string[];
+    rows: string[][];
+}
+
 export interface BlogSection {
     heading?: string;
     paragraphs: string[];
+    table?: BlogTable;
+}
+
+export interface BlogInternalLink {
+    label: string;
+    href: string;
 }
 
 export interface BlogPost {
@@ -12,9 +24,11 @@ export interface BlogPost {
     category: string;
     readTime: string;
     author: "technical" | "team";
+    image?: string;      // override for /images/blog/<slug>.webp
     relatedProduct?: string;
     relatedProductSlug?: string;
     relatedIndustrySlug?: string;
+    internalLinks?: BlogInternalLink[];
     body: BlogSection[];
 }
 
@@ -48,6 +62,81 @@ const SAMPLE_CTA =
     "Harmony Additives manufactures 173 APEO-free specialty additives and offers free technical consultation. Share your formulation and our chemists will recommend the right grade and dispatch a sample within the week.";
 
 export const posts: BlogPost[] = [
+    {
+        slug: "how-to-choose-a-defoamer",
+        title: "How to Choose a Defoamer: Silicone vs Mineral Oil vs Polymer",
+        excerpt: "Silicone, mineral-oil or polymer defoamer? A formulator's guide to choosing the right antifoam by system, pH, film quality and cost — with a side-by-side comparison table.",
+        date: "22 June 2026",
+        dateISO: "2026-06-22",
+        category: "Defoamers",
+        readTime: "9 min",
+        author: "technical",
+        image: "/images/category/defoamers.webp",
+        relatedProduct: "Defoamers & Antifoams",
+        relatedProductSlug: "defoamers",
+        relatedIndustrySlug: "paint-coatings",
+        internalLinks: [
+            { label: "Browse our 70 defoamer & antifoam grades", href: "/products/defoamers/" },
+            { label: "Wetting & dispersing agents", href: "/products/wetting-dispersing-agents/" },
+            { label: "Thickeners & anti-settling agents", href: "/products/thickeners-anti-settling-agents/" },
+            { label: "Defoamers for paint & coatings", href: "/industry/paint-coatings/" },
+            { label: "Defoamers for pulp & paper", href: "/industry/pulp-paper/" },
+            { label: "Guide: defoamers for water-based paints", href: "/blog/defoamers-aqueous-paints/" },
+            { label: "Guide: defoamers for solvent-based paints", href: "/blog/defoamers-non-aqueous-paints/" },
+        ],
+        body: [
+            { paragraphs: [
+                "Foam is one of the most common and costly problems in liquid formulation. Air entrained during high-speed mixing, pumping, filling, or application becomes trapped as foam — causing surface defects, pinholes, inaccurate dosing, slower production, and overflowing tanks. The right defoamer eliminates that foam at a dosage typically below 0.5% by weight, without harming gloss, adhesion, or recoatability. Choosing the wrong one, however, can introduce craters and fish-eyes that are worse than the foam itself.",
+                "This guide explains the three main defoamer chemistries — silicone, mineral oil, and polymer (polyether) — how they differ, and a simple framework for choosing the right one for your system.",
+            ]},
+            { heading: "What a defoamer actually does", paragraphs: [
+                "A defoamer works at the air–liquid interface. To collapse foam, it must be slightly incompatible with the medium so it can enter the bubble wall, then spread rapidly and rupture it. Most modern defoamers also carry hydrophobic particles (such as treated silica) that puncture the lamella like microscopic needles, accelerating bubble collapse.",
+                "That required incompatibility is also the central tension in defoamer selection: too compatible and it does nothing; too incompatible and it causes surface defects. The art is matching the degree of incompatibility — and the chemistry — to your specific system.",
+            ]},
+            { heading: "Silicone defoamers", paragraphs: [
+                "Silicone (polydimethylsiloxane) defoamers have the lowest surface tension of the three families, which makes them the most efficient — they often work at roughly one-tenth the dose of a mineral-oil grade and remain effective across a wide temperature range and pH 5–9. They suit water-based paints, textiles, effluent treatment, and many high-foam aqueous processes.",
+                "Their efficiency is also their risk: overdosed or poorly matched silicone can cause cratering, cavitation, and recoatability problems in some coatings. For water-based systems, emulsion-type and polyether-modified silicone grades (with an HLB around 1.5–3) give the best balance of compatibility and performance.",
+            ]},
+            { heading: "Mineral-oil defoamers", paragraphs: [
+                "Mineral-oil defoamers are typically 85–95% carrier oil combined with 1–3% hydrophobic particles and emulsifiers. They are cost-effective, gentle, and excellent at releasing fine entrained air from the bulk, which makes them a workhorse for flat and matt architectural paints, printing inks, and adhesives.",
+                "They are less efficient than silicone (higher dose required) and are primarily suited to non-aqueous and lower-sheen aqueous systems, but their low defect risk makes them a safe default where gloss is not critical.",
+            ]},
+            { heading: "Polymer & polyether defoamers", paragraphs: [
+                "Polymer defoamers — polyether and polyacrylate types — are silicone-free and offer the broadest compatibility, working across pH 3–12. They have good water solubility and biodegradability, strong chemical and temperature stability, and a low tendency to cause film defects, which makes them the preferred choice for premium water-based coatings and applications with strict environmental requirements.",
+                "They typically sit between mineral oil and silicone on both cost and efficiency — a balanced option when you need reliable foam control without the cratering risk of silicone or the higher dosing of mineral oil.",
+            ]},
+            {
+                heading: "Silicone vs mineral oil vs polymer — at a glance",
+                paragraphs: [
+                    "The table below summarises how the three families compare on the factors that drive selection.",
+                ],
+                table: {
+                    caption: "Defoamer chemistry comparison",
+                    headers: ["Chemistry", "Efficiency", "pH range", "Typical dosage", "Film-defect risk", "Relative cost", "Best for"],
+                    rows: [
+                        ["Silicone", "Highest", "5–9", "0.05–0.3%", "Medium–High (cratering if overdosed)", "Higher", "Water-based paints, textile, ETP, high-foam aqueous"],
+                        ["Mineral oil", "Moderate", "Broad", "0.2–0.5%", "Low", "Low", "Flat/matt paints, inks, adhesives, non-aqueous"],
+                        ["Polymer / polyether", "Moderate–High", "3–12", "0.1–0.4%", "Low", "Medium", "Premium water-based coatings, low-VOC / eco-sensitive systems"],
+                    ],
+                },
+            },
+            { heading: "How to choose: a 5-question framework", paragraphs: [
+                "1. What is the system — aqueous or solvent-based? Water-based systems favour silicone emulsion or polyether grades; solvent-based systems favour mineral-oil and polymer defoamers.",
+                "2. What is the pH? If your formulation runs strongly acidic or alkaline (outside pH 5–9), a polymer/polyether grade with its broad pH tolerance is the safer choice over standard silicone.",
+                "3. How critical is film quality? For high-gloss or clear coatings where cratering is unacceptable, choose a well-matched polyether or a fine emulsion silicone and trial at low dosage; for flat paints, mineral oil is forgiving.",
+                "4. What are the process conditions? High temperature and high shear (jet dyeing, paper machines) favour silicone or organophosphate antifoams engineered for those conditions.",
+                "5. Cost vs performance? Mineral oil is cheapest per kilo but needs more; silicone costs more per kilo but works at a fraction of the dose. Compare cost-in-use, not just unit price.",
+                "When two chemistries look viable, trial both on your actual system and evaluate the cured film — not just the wet product — before deciding.",
+            ]},
+            { heading: "Common selection mistakes", paragraphs: [
+                "The most frequent error is over-dosing a silicone defoamer, which trades foam for craters and adhesion loss. Others include choosing a defoamer that is incompatible with the binder, ignoring the application method (spray vs brush vs coater generate different foam), and adding all the defoamer at one stage instead of splitting it between the grind and the let-down. Address the mechanical source of air entrainment too — a cavitating pump can defeat any defoamer.",
+            ]},
+            { heading: "Why APEO-free matters", paragraphs: [
+                "Many legacy defoamers relied on alkylphenol ethoxylate (APEO) surfactants, which are now restricted under EU REACH and increasingly scrutinised worldwide for aquatic toxicity. Specifying an APEO-free defoamer protects your product against regulatory and export risk. Every defoamer in the Harmony Additives range is APEO-free as a company-wide standard.",
+                "Still unsure which grade fits your formulation? Our technical team will recommend the right defoamer from our 70-product range and dispatch a sample — share your system details and we will respond within one business day.",
+            ]},
+        ],
+    },
     {
         slug: "defoamers-antifoams-adhesive-industry",
         title: "Defoamers in Adhesive Manufacturing: Selection Guide & Best Practices",

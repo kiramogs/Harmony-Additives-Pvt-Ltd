@@ -1,26 +1,23 @@
 # Full SEO Audit — Harmony Additives (Live)
 
-**Audited URL:** https://harmonyadditives.vercel.app (production build, canonical domain harmonyadditive.in)
-**Date:** 2026-06-21
+**Audited URL:** https://harmonyadditives.vercel.app (production build; canonical domain harmonyadditive.in)
+**Date:** 2026-06-22
 **Business type:** B2B specialty-chemical manufacturer (industrial; local + export)
-**Method:** Live crawl of all 37 sitemap URLs + per-page signal analysis (inline, not cloud subagents)
+**Method:** Live crawl of all 210 sitemap URLs + per-page signal analysis (inline)
 
 ## Executive Summary
 
-**SEO Health Score: 93 / 100** — Excellent. Up from 88 at the previous (pre-deploy) audit. The site is now live, all earlier fixes are confirmed in production, and the Screaming Frog crawl issues plus the title-length and duplicate-domain items found in this pass are resolved.
+**SEO Health Score: 94 / 100** — Excellent, up from 93. Since the last audit the site added **173 individual product pages** (with Product + FAQ schema), **real on-brand imagery** across all page types, and the **droplet SVG favicon**. All 210 URLs return 200, every fix from prior audits is confirmed in production.
 
-### Confirmed live (verified this pass)
-- All 37 sitemap URLs return **200** — zero broken pages.
-- Homepage **H1 present** in server HTML (the earlier critical SSR gap is fixed in prod).
-- All 6 security headers live, **including Content-Security-Policy**.
-- **Zero parameterised `?product=` URLs** — the 173 canonicalised/uppercase/space/param crawl issues are gone.
-- 15 blog article pages live with Article/Person schema (the 15 internal 4xx are resolved).
-- WebP frames + 7 kB logo serving; custom 404 returns a real 404 with helpful links.
-- Canonicals absolute, self-referential, trailing-slash, pointing to harmonyadditive.in.
+### Confirmed live this pass
+- **210 sitemap URLs, all 200** (6 static + 6 categories + 10 industries + 15 blog + 173 products).
+- Homepage H1 present in SSR; all 6 security headers incl. CSP; trailing-slash canonicals; custom 404; llms.txt; vercel.app noindex middleware.
+- **Droplet SVG favicon** serving (`/icon.svg`, image/svg+xml) + apple-icon; default Next icon removed.
+- Product pages: unique keyword-first titles, **per-product differentiated meta descriptions**, Product + FAQPage + BreadcrumbList schema, OG images.
+- Real images embedded everywhere (category/industry/blog/about) as sized WebP with alt text; real per-article OG images.
 
-### Fixed in this pass (commit aa18da5)
-- **Title length:** 8 titles rendered 73-90 chars → trimmed to ≤62 (industry hub, about, ask-expert, emulsifiers, wetting, thickeners, surface, specialty). H1s/descriptions unchanged.
-- **Duplicate domain:** `*.vercel.app` was indexable alongside harmonyadditive.in → added middleware setting `X-Robots-Tag: noindex` on the vercel.app host.
+### Top finding (Medium) — templated product-page content
+The 173 product pages are structurally excellent (unique titles, descriptions, schema, internal links) but their **body copy is templated** — same-type SKUs (e.g. DF 5151 / 5151 M / 5151 SPL, all "30% Silicone Defoamer") share the overview/FAQ structure, differing mainly by code and industry set. This is normal for a catalog and **not penalised**, but it caps how high each page can rank. **The single highest-value upgrade is real TDS data per product** (active content %, appearance, ionic nature, pH, recommended dosage, packaging) — only the company can supply this, and it would turn good templated pages into genuinely rich, differentiated ones. *No specs were fabricated.*
 
 ---
 
@@ -28,46 +25,48 @@
 
 | Category | Weight | Score | Notes |
 |----------|--------|-------|-------|
-| Technical SEO | 22% | 96 | CSP + 5 headers, sitemap, robots, llms, trailing-slash, clean canonicals, custom 404, asset caching, vercel.app noindex |
-| Content Quality | 23% | 90 | 173 real products, 15 full articles, problem-led industry copy, E-E-A-T author + ISO + facilities |
-| On-Page SEO | 20% | 95 | Unique titles (now ≤62) + descriptions, single H1/page, strong internal linking |
-| Schema | 10% | 88 | Org, LocalBusiness, WebSite, Breadcrumb, FAQ, Blog/BlogPosting/Person, ItemList, AboutPage. Gap: per-Product schema |
-| Performance (CWV) | 10% | 78 | WebP done (12MB→2MB frames); 87-frame hero is the request-count watch item; no CrUX field data yet (fresh deploy) |
-| AI Search Readiness | 10% | 90 | llms.txt, FAQ blocks, definition-style intros, strong entity signals |
-| Images | 5% | 95 | All alt text present; logo 1.6MB→7kB; frames WebP; properly sized |
+| Technical SEO | 22% | 96 | Headers+CSP, sitemap (210), robots, llms, canonicals, 404, caching, favicon, vercel.app noindex |
+| Content Quality | 23% | 88 | Strong blog/category/industry; 173 product pages add long-tail breadth but body is templated (see top finding) |
+| On-Page SEO | 20% | 96 | Unique titles+descriptions across 210 pages, single H1/page, deep product↔category↔industry linking |
+| Schema | 10% | 92 | Org, LocalBusiness, WebSite, Breadcrumb, FAQ, Blog/Person, ItemList, AboutPage, **Product ×173** |
+| Performance (CWV) | 10% | 78 | All images WebP/optimized; 87-frame hero remains the request-count watch item; no CrUX field data yet |
+| AI Search Readiness | 10% | 92 | Product Q&A FAQs + spec tables + llms.txt + entity signals = highly citable |
+| Images | 5% | 96 | Real imagery, all WebP, alt text, explicit dimensions (no CLS) |
 
 ## Technical SEO — 96/100
+All 210 URLs 200. Security headers verified live (CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy). robots.txt, sitemap.xml (210), llms.txt all 200. SVG favicon + apple-icon live. Static assets cached; middleware noindexes the vercel.app host.
 
-All 37 sitemap URLs 200. Security headers verified live: `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`. robots.txt, sitemap.xml (37 URLs), llms.txt all 200. Custom 404 with noindex. Static assets carry long-lived `Cache-Control`. Middleware noindexes the vercel.app preview host.
+## On-Page SEO — 96/100
+Unique, length-controlled titles on all page types including the 173 products (keyword-first "{Type} — {Code}"). Per-product meta descriptions differ by industry set. Exactly one H1/page. Internal linking is a major strength: category grids link to product pages; product pages link to category, industries, and related SKUs.
 
-## On-Page SEO — 95/100
+## Content Quality & E-E-A-T — 88/100
+Blog (15 full articles, Technical Director byline + Person schema), category pages (400-600w + FAQ), industry pages (problem-led + FAQ + real product lists). Product pages are honest and schema-rich but templated — enrich with real TDS data (top finding). E-E-A-T signals strong: APEO-free, ISO 9001/14001, named facilities, consistent NAP, real imagery.
 
-Every page has a unique, keyword-led title (now all ≤62 rendered chars) and a 150-160-char description. Exactly one H1 per page. Internal linking is a strength: product↔industry cross-links, breadcrumbs, 4-column footer, related articles/products.
-
-## Content Quality & E-E-A-T — 90/100
-
-173 real products (codes + chemistry + per-product industries), 15 full blog articles authored by the Technical Director (Person schema), problem-led industry pages with FAQs. APEO-free, ISO 9001/14001, named facilities, consistent NAP. Remaining depth opportunity: individual product detail pages.
-
-## Schema — 88/100
-
-Comprehensive and valid. Only gap: per-`Product` JSON-LD for the 173 products (currently category-level `ItemList`).
+## Schema — 92/100
+Comprehensive and valid across the site. 173 Product entities (sku/mpn, brand, manufacturer, category, APEO-free, system, origin) + FAQPage on every product. Remaining opportunity: add `offers` once price/availability policy is decided (currently omitted to avoid invalid price data).
 
 ## Performance (CWV) — 78/100
+Images fully optimized (logo 1.6MB→7kB, frames 12MB→2MB, site imagery 16MB→2.3MB). The homepage 87-frame scroll hero is the main request-count/LCP watch item — inherent to the animation. No CrUX field data yet (fresh deployment); run PageSpeed Insights on the live domain for lab scores.
 
-WebP conversion done (frames 12MB→2MB, logo 1.6MB→7kB). The homepage scroll hero still loads 87 frame images — the main request-count/LCP watch item, inherent to the animation. No CrUX field data yet (site just deployed; needs ~28 days of Chrome traffic). Run PageSpeed Insights on the live URL for lab scores.
+## AI Search Readiness (GEO) — 92/100
+Every product page now answers extractable questions ("Is {code} APEO-free?", "Which systems/industries?") with FAQ schema, plus a factual spec table and one-line definitional lead — ideal for AI Overviews / ChatGPT / Perplexity citation. llms.txt published; strong Organization/LocalBusiness entity graph.
 
-## AI Search Readiness — 90/100
+## Images — 96/100
+All images carry descriptive alt text and explicit width/height; real category/industry/blog/company imagery as WebP. Real per-article OG images.
 
-llms.txt published with full catalogue + links. Content is highly citable (FAQ Q&A, "What is…" intros, structured product data). Strong Organization/LocalBusiness entity signals. Off-site authority (backlinks, directories, GBP) remains the growth lever.
+## Prioritised Recommendations
 
-## Images — 95/100
+**P1 — get found (your action, gating everything):**
+1. Point **harmonyadditive.in** at this Vercel deploy (Settings → Domains), verify in **Google Search Console** + Bing, submit `sitemap.xml`, request indexing.
+2. Claim **Google Business Profile** + **IndiaMART / TradeIndia / Justdial** (they own generic head terms).
 
-All images carry descriptive alt text. Logo and hero frames optimized and properly sized. No oversized images remain.
+**P2 — make product pages best-in-class:**
+3. Add **real TDS data per product** (active %, appearance, ionic nature, pH, dosage, packaging) → unique, deep, rich-result-eligible pages. Biggest content lever.
+4. Optionally add per-product `Offer` (availability + "price on request") once decided.
 
-## Remaining recommendations (not blocking)
+**P3 — performance & authority:**
+5. Measure CWV on the live domain; if hero LCP is weak, reduce frame count or serve a lighter mobile hero.
+6. Backlinks: trade associations (IPMA, ICC), Paint India 2026 exhibitor listing, one trade-journal technical article.
 
-1. **Make harmonyadditive.in the primary domain in Vercel** — points the canonical domain at this deployment and auto-301s vercel.app. (Middleware already prevents duplicate indexing in the meantime.)
-2. **Per-Product schema** on top product pages once individual product pages exist.
-3. **Measure CWV** via PageSpeed Insights / CrUX after ~4 weeks of live traffic; tune the 87-frame hero if LCP/INP need work.
-4. **Off-site authority:** GBP, IndiaMART/TradeIndia, trade-association directories; submit sitemap in GSC + Bing.
-5. **SPF/DNS:** add an SPF TXT record for email deliverability (DNS-level, not code).
+**P4 — monitoring:**
+7. In GSC, target queries ranking position 8–15 ("almost there") for quick wins; track top 20 commercial keywords.

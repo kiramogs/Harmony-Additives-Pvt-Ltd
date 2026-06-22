@@ -1,0 +1,82 @@
+{
+  "summary": {
+    "health_score": 94,
+    "business_type": "B2B specialty-chemical manufacturer (industrial; local + export)",
+    "top_findings": [
+      "210 sitemap URLs, all return 200 (incl. 173 new product pages)",
+      "Product + FAQ + Breadcrumb schema on every product page",
+      "Real on-brand imagery embedded site-wide as optimized WebP",
+      "Templated product-page body copy is the main ceiling on ranking",
+      "Domain not yet pointed to harmonyadditive.in / not in Search Console"
+    ],
+    "quick_wins": [
+      "Point harmonyadditive.in at the Vercel deploy + verify in GSC, submit sitemap",
+      "Claim Google Business Profile + IndiaMART/TradeIndia listings",
+      "Run PageSpeed Insights on the live domain for CWV lab data"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 96,
+      "what_works": ["All 210 URLs 200", "CSP + 5 security headers", "sitemap/robots/llms", "trailing-slash canonicals", "custom 404", "asset caching", "vercel.app noindex", "SVG favicon"],
+      "findings": [
+        {"title": "No CrUX field data yet", "severity": "Info", "description": "Fresh deployment; Core Web Vitals field data needs ~28 days of Chrome traffic.", "recommendation": "Run PageSpeed Insights on the live domain; revisit CrUX after launch."}
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 88,
+      "what_works": ["15 full blog articles with author + Person schema", "category pages 400-600w + FAQ", "industry pages problem-led + FAQ + real product lists", "APEO-free / ISO / facility E-E-A-T signals"],
+      "findings": [
+        {"title": "Templated product-page body copy", "severity": "Medium", "description": "173 product pages are unique by title/description/schema/industry set, but body copy is templated; same-type SKUs read similarly.", "recommendation": "Add real TDS data per product (active %, appearance, ionic nature, pH, dosage, packaging) to make each page deep and rich-result-eligible. Do not fabricate specs."}
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 96,
+      "what_works": ["Unique length-controlled titles across 210 pages", "per-product differentiated meta descriptions", "single H1 per page", "deep product<->category<->industry internal linking"],
+      "findings": []
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 92,
+      "what_works": ["Organization, LocalBusiness, WebSite, Breadcrumb, FAQ, Blog/Person, ItemList, AboutPage", "Product schema x173 with sku/mpn, brand, manufacturer, APEO-free, system, origin"],
+      "findings": [
+        {"title": "Product offers omitted", "severity": "Low", "description": "Product schema omits offers/price to avoid invalid data for a price-on-request B2B catalog.", "recommendation": "Add Offer with availability + 'price on request' policy once decided."}
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 78,
+      "what_works": ["All imagery optimized to WebP (logo 1.6MB->7kB, frames 12MB->2MB, site images 16MB->2.3MB)"],
+      "findings": [
+        {"title": "87-frame scroll hero", "severity": "Medium", "description": "Homepage hero preloads 87 frame images; main request-count/LCP cost, inherent to the animation.", "recommendation": "Measure LCP on live domain; if weak, cut frame count or serve a lighter mobile hero."}
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 92,
+      "what_works": ["Per-product FAQ Q&A + spec tables", "definitional one-line leads", "llms.txt", "strong entity graph"],
+      "findings": []
+    },
+    {
+      "name": "Images",
+      "score": 96,
+      "what_works": ["Real category/industry/blog/company imagery as WebP", "descriptive alt text", "explicit width/height (no CLS)", "real per-article OG images"],
+      "findings": []
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {"name": "Phase 1: Get Found", "timeframe": "Week 1", "items": ["Point harmonyadditive.in at Vercel + verify in GSC/Bing", "Submit sitemap.xml, request indexing", "Claim Google Business Profile + IndiaMART/TradeIndia/Justdial"]},
+      {"name": "Phase 2: Best-in-class product pages", "timeframe": "Weeks 2-4", "items": ["Add real TDS data per product (start with top sellers)", "Optionally add Product Offer with availability"]},
+      {"name": "Phase 3: Performance & Authority", "timeframe": "Month 2", "items": ["Measure & tune CWV (hero LCP)", "Backlinks: associations, Paint India 2026 listing, trade-journal article"]},
+      {"name": "Phase 4: Monitoring", "timeframe": "Ongoing", "items": ["Target GSC position 8-15 queries", "Track top 20 commercial keywords"]}
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}
