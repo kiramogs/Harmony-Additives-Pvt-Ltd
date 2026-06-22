@@ -1,5 +1,5 @@
-import ScrollAnimation from "@/components/ScrollAnimation";
 import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import ProductsSection from "@/components/ProductsSection";
@@ -10,10 +10,6 @@ import ParticleField from "@/components/ParticleField";
 export default function Home() {
   return (
     <main>
-      {/* Phase 1: Scroll-driven frame animation */}
-      <ScrollAnimation />
-
-      {/* Phase 2: Glassmorphism content sections */}
       <div id="content-start" className="content-wrapper">
         <Navbar />
 
@@ -27,6 +23,9 @@ export default function Home() {
 
         {/* Floating particle background */}
         <ParticleField />
+
+        {/* Lightweight static hero (replaces the 87-frame scroll animation) */}
+        <Hero />
 
         <AboutSection />
         <IndustriesSection />

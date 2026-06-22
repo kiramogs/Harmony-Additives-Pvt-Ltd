@@ -3,11 +3,11 @@
     "health_score": 94,
     "business_type": "B2B specialty-chemical manufacturer (industrial; local + export)",
     "top_findings": [
-      "210 sitemap URLs, all return 200 (incl. 173 new product pages)",
-      "Product + FAQ + Breadcrumb schema on every product page",
-      "Real on-brand imagery embedded site-wide as optimized WebP",
-      "Templated product-page body copy is the main ceiling on ranking",
-      "Domain not yet pointed to harmonyadditive.in / not in Search Console"
+      "211 sitemap URLs, all return 200 (22 core + 173 products + 16 blog)",
+      "Product + FAQ + Breadcrumb schema on every product page; new defoamer-selection pillar guide with comparison table",
+      "On-page/technical foundation near practical ceiling (Technical 96, On-Page 96)",
+      "Templated product-page body copy is the main on-site ranking ceiling (needs real TDS data)",
+      "Off-platform is now the lever: domain->GSC, GBP/directories, backlinks"
     ],
     "quick_wins": [
       "Point harmonyadditive.in at the Vercel deploy + verify in GSC, submit sitemap",

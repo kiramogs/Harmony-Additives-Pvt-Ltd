@@ -20,7 +20,6 @@ export default function Navbar() {
     const navRef = useRef<HTMLElement>(null);
     const [mobileOpen, setMobileOpen] = useState(false);
     const pathname = usePathname();
-    const isHomepage = pathname === "/";
 
     useEffect(() => {
         if (!navRef.current) return;
@@ -29,7 +28,9 @@ export default function Navbar() {
             "(prefers-reduced-motion: reduce)"
         ).matches;
 
-        if (!isHomepage || prefersReducedMotion) {
+        // Navbar is always visible from the top now (the static hero is the first
+        // thing in the document). Gentle entrance fade unless reduced-motion.
+        if (prefersReducedMotion) {
             gsap.set(navRef.current, { y: 0, opacity: 1 });
             return;
         }
@@ -38,22 +39,12 @@ export default function Navbar() {
             gsap.fromTo(
                 navRef.current,
                 { y: -100, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.8,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: "#content-start",
-                        start: "top 80%",
-                        toggleActions: "play none none reverse",
-                    },
-                }
+                { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
             );
         }, navRef);
 
         return () => ctx.revert();
-    }, [isHomepage]);
+    }, []);
 
     useEffect(() => {
         const handleResize = () => {
