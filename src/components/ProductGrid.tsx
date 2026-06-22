@@ -149,7 +149,11 @@ export default function ProductGrid({
                                 </span>
                             </div>
 
-                            <h3 className="pg-card-name">{product.name}</h3>
+                            <h3 className="pg-card-name">
+                                <Link href={`/product/${product.slug}/`} className="pg-card-name-link">
+                                    {product.name}
+                                </Link>
+                            </h3>
                             <p className="pg-card-type">{product.type}</p>
 
                             <div className="pg-card-uses">
@@ -186,12 +190,9 @@ export default function ProductGrid({
                                 >
                                     Request Sample
                                 </Link>
-                                <a
-                                    href={`mailto:sales@additive.in?subject=${encodeURIComponent(`TDS Request — ${product.name}`)}&body=${encodeURIComponent(`Dear Harmony Additives team,\n\nPlease send me the Technical Data Sheet for:\nProduct: ${product.name}\nType: ${product.type}\n\nThank you.`)}`}
-                                    className="pg-btn pg-btn--secondary"
-                                >
-                                    Get TDS
-                                </a>
+                                <Link href={`/product/${product.slug}/`} className="pg-btn pg-btn--secondary">
+                                    View Details
+                                </Link>
                             </div>
                         </article>
                     ))}

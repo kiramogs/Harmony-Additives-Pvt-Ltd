@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { industries } from "@/data/industries";
-import { CATEGORY_META } from "@/data/products";
+import { CATEGORY_META, products } from "@/data/products";
 import { posts } from "@/data/blog";
 
 const BASE = "https://harmonyadditive.in";
@@ -38,5 +38,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.6,
     }));
 
-    return [...staticPages, ...categoryPages, ...industryPages, ...blogPages];
+    const productPages: MetadataRoute.Sitemap = products.map((p) => ({
+        url: `${BASE}/product/${p.slug}/`,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.7,
+    }));
+
+    return [...staticPages, ...categoryPages, ...industryPages, ...blogPages, ...productPages];
 }

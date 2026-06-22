@@ -132,6 +132,18 @@ products.sort((a, b) => {
     return a.name.localeCompare(b.name);
 });
 
+// ── Assign a unique, URL-safe slug per product (from the product code) ──
+const slugify = (s) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+const slugSeen = new Set();
+for (const p of products) {
+    let base = slugify(p.id) || slugify(p.name);
+    let slug = base;
+    let n = 2;
+    while (slugSeen.has(slug)) slug = `${base}-${n++}`;
+    slugSeen.add(slug);
+    p.slug = slug;
+}
+
 // ── Counts ──
 const counts = {};
 for (const p of products) counts[p.categorySlug] = (counts[p.categorySlug] || 0) + 1;
@@ -150,6 +162,7 @@ lines.push(`}`);
 lines.push(``);
 lines.push(`export interface Product {`);
 lines.push(`    id: string;`);
+lines.push(`    slug: string;`);
 lines.push(`    name: string;`);
 lines.push(`    type: string;`);
 lines.push(`    category: string;`);
@@ -186,7 +199,7 @@ lines.push(``);
 lines.push(`export const products: Product[] = [`);
 for (const p of products) {
     const inds = p.industries.map((i) => `{ label: ${JSON.stringify(i.label)}, slug: "${i.slug}" }`).join(", ");
-    lines.push(`    { id: ${JSON.stringify(p.id)}, name: ${JSON.stringify(p.name)}, type: ${JSON.stringify(p.type)}, category: ${JSON.stringify(p.category)}, categorySlug: "${p.categorySlug}", system: "${p.system}", industries: [${inds}] },`);
+    lines.push(`    { id: ${JSON.stringify(p.id)}, slug: "${p.slug}", name: ${JSON.stringify(p.name)}, type: ${JSON.stringify(p.type)}, category: ${JSON.stringify(p.category)}, categorySlug: "${p.categorySlug}", system: "${p.system}", industries: [${inds}] },`);
 }
 lines.push(`];`);
 lines.push(``);
@@ -196,6 +209,17 @@ lines.push(`}`);
 lines.push(``);
 lines.push(`export function getProductsByIndustry(slug: string): Product[] {`);
 lines.push(`    return products.filter((p) => p.industries.some((i) => i.slug === slug));`);
+lines.push(`}`);
+lines.push(``);
+lines.push(`export function getProductBySlug(slug: string): Product | undefined {`);
+lines.push(`    return products.find((p) => p.slug === slug);`);
+lines.push(`}`);
+lines.push(``);
+lines.push(`/** Related products: same type first, then same category. */`);
+lines.push(`export function getRelatedProducts(p: Product, limit = 6): Product[] {`);
+lines.push(`    const sameType = products.filter((x) => x.slug !== p.slug && x.categorySlug === p.categorySlug && x.type === p.type);`);
+lines.push(`    const sameCat = products.filter((x) => x.slug !== p.slug && x.categorySlug === p.categorySlug && x.type !== p.type);`);
+lines.push(`    return [...sameType, ...sameCat].slice(0, limit);`);
 lines.push(`}`);
 lines.push(``);
 lines.push(`export const TOTAL_PRODUCTS = ${products.length};`);
