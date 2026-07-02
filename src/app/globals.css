@@ -1884,6 +1884,98 @@ body {
   box-shadow: 0 5px 18px rgba(3, 105, 161, 0.35);
 }
 
+/* ── Hero search autocomplete ── */
+.hero-search-shell {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 1.75rem auto 0;
+  z-index: 20;
+}
+.hero-search-shell .hero-search {
+  margin: 0;
+  max-width: none;
+}
+.hero-ac {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16);
+  max-height: 340px;
+  overflow-y: auto;
+  z-index: 60;
+  text-align: left;
+}
+.hero-ac-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-body-family);
+  color: var(--color-text);
+  transition: background 0.12s ease;
+}
+.hero-ac-item.is-active,
+.hero-ac-item:hover {
+  background: rgba(3, 105, 161, 0.09);
+}
+.hero-ac-main {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.hero-ac-type {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hero-ac-meta {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-subtle);
+}
+.hero-ac-badge {
+  flex-shrink: 0;
+  padding: 0.12rem 0.5rem;
+  border-radius: 100px;
+  background: rgba(3, 105, 161, 0.12);
+  color: var(--color-accent);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.hero-ac-item--cat .hero-ac-main { flex: 1; }
+.hero-ac-item--all {
+  color: var(--color-accent);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.hero-ac-item--all strong { font-weight: 700; }
+@media (max-width: 540px) {
+  .hero-ac-type { display: none; }
+}
+
 .hero-stats {
   list-style: none;
   display: grid;
